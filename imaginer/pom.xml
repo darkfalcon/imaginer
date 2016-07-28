@@ -35,9 +35,22 @@
 
 			<dependency>
 				<groupId>org.springframework</groupId>
+				<artifactId>spring-context-support</artifactId>
+				<version>4.3.1.RELEASE</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.springframework</groupId>
 				<artifactId>spring-web</artifactId>
 				<version>4.3.1.RELEASE</version>
 			</dependency>
+
+			<dependency>
+				<groupId>org.springframework.webflow</groupId>
+				<artifactId>spring-faces</artifactId>
+				<version>2.4.4.RELEASE</version>
+			</dependency>
+
 
 			<dependency>
 				<groupId>javax.el</groupId>
@@ -50,5 +63,7 @@
 	<modules>
 		<module>imaginer-web</module>
 		<module>imaginer-core</module>
+		<module>imaginer-client-api</module>
+		<module>imaginer-app</module>
 	</modules>
 </project>
