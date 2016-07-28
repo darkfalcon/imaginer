@@ -1,0 +1,10 @@
+target
+dist
+dist-builder
+.metadata
+*.log
+nb-configuration.xml
+.project
+.classpath
+.settings
+bin
