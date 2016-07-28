@@ -65,5 +65,6 @@
 		<module>imaginer-core</module>
 		<module>imaginer-client-api</module>
 		<module>imaginer-app</module>
+		<module>imaginer-core-entity</module>
 	</modules>
 </project>
