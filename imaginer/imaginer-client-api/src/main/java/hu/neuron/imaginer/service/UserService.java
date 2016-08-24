@@ -1,6 +1,14 @@
 package hu.neuron.imaginer.service;
 
-public interface UserService {
+import java.util.List;
 
-	public boolean addItem(String code);
+import hu.neuron.imaginer.vo.user.UserVO;
+
+public interface UserService {
+	
+	public List<UserVO> findAllUsers();
+	
+	public UserVO findUserById(Long id);
+	
+	public boolean registerUser(UserVO user);
 }

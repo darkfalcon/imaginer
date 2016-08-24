@@ -1,28 +1,58 @@
 package hu.neuron.imaginer.service.impl;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 
+import org.dozer.DozerBeanMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import hu.neuron.imaginer.entity.user.User;
+import hu.neuron.imaginer.repository.user.UserRepository;
 import hu.neuron.imaginer.service.UserService;
+import hu.neuron.imaginer.vo.user.UserVO;
 
 @Service
 public class UserServiceImpl implements UserService {
-	
+
 	@PersistenceContext
 	private EntityManager em;
 
-	public boolean addItem(String code) {
-		
-		Query createQuery = em.createQuery("SELECT username FROM User");
-		for (Object object : createQuery.getResultList()) {
-			System.out.println("Name:" + object);
+	@Autowired
+	private UserRepository userRepository;
+
+	public List<UserVO> findAllUsers() {
+		final List<User> users = userRepository.findAll();
+		final List<UserVO> usersVOs;
+
+		if (users.size() > 0) {
+			usersVOs = new ArrayList<UserVO>(users.size());
+			for (User user : users) {
+				usersVOs.add(new DozerBeanMapper().map(user, UserVO.class));
+			}
+			return usersVOs;
+		} else {
+			return Collections.emptyList();
 		}
-		
-		System.out.println("This is the code nigga: " + code);
-		return false;
+	}
+
+	public UserVO findUserById(Long id) {
+		User userById = userRepository.findById(id);
+		if (userById != null) {
+			return new DozerBeanMapper().map(userById, UserVO.class);
+		} else {
+			throw new RuntimeException("There is no user found with this id: " + id + " in the database!");
+		}
+	}
+
+	public boolean registerUser(UserVO user) {
+		User userEntity = new DozerBeanMapper().map(user, User.class);
+		User savedUser = userRepository.save(userEntity);
+		return savedUser != null ? true : false;
 	}
 
 }

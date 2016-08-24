@@ -1,45 +1,33 @@
-package hu.neuron.imaginer.entity.user;
+package hu.neuron.imaginer.vo.user;
 
+import java.io.Serializable;
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+public class UserVO implements Serializable {
 
-@Entity
-@Table(name="user")
-public class User {
+	private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 
 	private String username;
 
-	@Column(name="first_name",nullable=false)
 	private String firstName;
 
-	@Column(name="last_name",nullable=false)
 	private String lastName;
-	
-	@Column(name="email_address",nullable=false)
+
 	private String emailAddress;
-	
-	@Column(name="birth_date",nullable=false)
+
 	private Date birthDate;
 
-	public User() {
+	public UserVO() {
 		super();
 	}
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -81,5 +69,15 @@ public class User {
 
 	public void setBirthDate(Date birthDate) {
 		this.birthDate = birthDate;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	@Override
+	public String toString() {
+		return "UserVO [id=" + id + ", username=" + username + ", firstName=" + firstName + ", lastName=" + lastName
+				+ ", emailAddress=" + emailAddress + ", birthDate=" + birthDate + "]";
 	}
 }
