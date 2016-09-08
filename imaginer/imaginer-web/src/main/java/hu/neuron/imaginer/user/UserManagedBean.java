@@ -8,21 +8,18 @@ import java.util.Date;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import hu.neuron.imaginer.service.UserService;
 import hu.neuron.imaginer.vo.user.UserVO;
 
-@Component
 @ManagedBean
 @RequestScoped
 public class UserManagedBean {
 	private String code;
 
-	@Autowired
+	@ManagedProperty("#{userService}")
 	UserService userService;
 
 	public void addItem() {

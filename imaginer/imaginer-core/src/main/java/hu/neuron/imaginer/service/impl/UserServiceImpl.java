@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import hu.neuron.imaginer.entity.user.User;
+import hu.neuron.imaginer.exception.ApplicationException;
 import hu.neuron.imaginer.repository.user.UserRepository;
 import hu.neuron.imaginer.service.UserService;
 import hu.neuron.imaginer.vo.user.UserVO;
@@ -25,7 +26,7 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	private UserRepository userRepository;
 
-	public List<UserVO> findAllUsers() {
+	public List<UserVO> findAllUsers() throws ApplicationException {
 		final List<User> users = userRepository.findAll();
 		final List<UserVO> usersVOs;
 
@@ -40,19 +41,39 @@ public class UserServiceImpl implements UserService {
 		}
 	}
 
-	public UserVO findUserById(Long id) {
+	public UserVO findUserById(Long id) throws ApplicationException {
 		User userById = userRepository.findById(id);
 		if (userById != null) {
 			return new DozerBeanMapper().map(userById, UserVO.class);
 		} else {
-			throw new RuntimeException("There is no user found with this id: " + id + " in the database!");
+			throw new ApplicationException("There is no user found with this id: " + id + " in the database!");
 		}
 	}
 
-	public boolean registerUser(UserVO user) {
+	public boolean registerUser(UserVO user) throws ApplicationException {
 		User userEntity = new DozerBeanMapper().map(user, User.class);
 		User savedUser = userRepository.save(userEntity);
 		return savedUser != null ? true : false;
+	}
+
+	public UserVO findUserByUserName(String username) throws ApplicationException {
+		User userByUsername = userRepository.findByUsername(username);
+		if (userByUsername != null) {
+			return new DozerBeanMapper().map(userByUsername, UserVO.class);
+		} else {
+			throw new ApplicationException(
+					"There is no user found with this username: " + username + " in the database!");
+		}
+	}
+
+	public UserVO findUserByEmailAddress(String emailAddress) throws ApplicationException {
+		User userByEmailAddress = userRepository.findByEmailAddress(emailAddress);
+		if (userByEmailAddress != null) {
+			return new DozerBeanMapper().map(userByEmailAddress, UserVO.class);
+		} else {
+			throw new ApplicationException(
+					"There is no user found with this email address: " + emailAddress + " in the database!");
+		}
 	}
 
 }

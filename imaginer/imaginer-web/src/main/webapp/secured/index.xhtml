@@ -3,7 +3,13 @@
 	xmlns:p="http://primefaces.org/ui" template="/templates/mainLayout.xhtml">
 	
 	<ui:define name="content">
-		Megérkeztél
+		<f:event listener="#{userInfoManagedBean.initUserInfo}" type="preRenderView" />
+		<p:panel>
+			<h:outputText value="Felhasználónév: #{userInfoManagedBean.actualUser.username}" /><br />
+			<h:outputText value="Vezeték név: #{userInfoManagedBean.actualUser.firstName}" /><br />
+			<h:outputText value="Kereszt név: #{userInfoManagedBean.actualUser.lastName}" />
+			<h:outputText value="EMail cím: #{userInfoManagedBean.actualUser.emailAddress}" /><br /> 
+		</p:panel>
 	</ui:define>
 
 </ui:composition>
