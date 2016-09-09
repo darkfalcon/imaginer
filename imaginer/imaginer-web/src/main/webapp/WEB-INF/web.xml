@@ -12,9 +12,34 @@
 
 	<listener>
 		<listener-class>
-			org.springframework.web.context.request.RequestContextListener
-		</listener-class>
+			org.springframework.web.context.request.RequestContextListener</listener-class>
 	</listener>
+
+	<context-param>
+		<param-name>contextClass</param-name>
+		<param-value>org.springframework.web.context.support.AnnotationConfigWebApplicationContext</param-value>
+	</context-param>
+	<!-- Configuration locations must consist of one or more comma- or space-delimited -->
+	<!-- fully-qualified @Configuration classes -->
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>hu.neuron.imaginer.config.SpringRootAppConfiguration</param-value>
+	</context-param>
+
+	<servlet>
+		<servlet-name>Spring MVC Dispatcher Servlet</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextClass</param-name>
+			<param-value>org.springframework.web.context.support.AnnotationConfigWebApplicationContext</param-value>
+		</init-param>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>hu.neuron.imaginer.config.SpringWebAppConfiguration</param-value>
+		</init-param>
+
+		<load-on-startup>0</load-on-startup>
+	</servlet>
 
 	<servlet>
 		<servlet-name>Faces Servlet</servlet-name>
@@ -38,16 +63,11 @@
 		<servlet-name>Faces Servlet</servlet-name>
 		<url-pattern>*.xhtml</url-pattern>
 	</servlet-mapping>
-
 	<context-param>
 		<param-name>javax.faces.CONFIG_FILES</param-name>
 		<param-value>
 			/WEB-INF/faces-config.xml
 		</param-value>
-	</context-param>
-	<context-param>
-		<param-name>contextConfigLocation</param-name>
-		<param-value>/WEB-INF/applicationContext*.xml</param-value>
 	</context-param>
 	<context-param>
 		<param-name>javax.faces.PROJECT_STAGE</param-name>

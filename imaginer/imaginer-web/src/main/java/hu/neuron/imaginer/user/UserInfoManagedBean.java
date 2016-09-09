@@ -18,7 +18,7 @@ import hu.neuron.imaginer.vo.user.UserVO;
 public class UserInfoManagedBean implements Serializable {
 
 	@ManagedProperty("#{userServiceImpl}")
-	UserService userService;
+	private UserService userService;
 
 	private UserVO actualUser;
 
