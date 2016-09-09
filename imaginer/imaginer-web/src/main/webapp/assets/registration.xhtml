@@ -1,0 +1,66 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui">
+
+	<p:panel id="registration">
+		<h:form id="registration-form">
+
+			<p:commandLink value="#{msg['imaginer.registration.create-account']}">
+				<p:ajax listener="#{userRegistrationManagedBean.prepareUserRegistration}" partialSubmit="true" process="@none"
+					update="registration-table" />
+			</p:commandLink>
+
+			<p:panelGrid id="registration-table" rendered="#{userRegistrationManagedBean.registrationFormVisible}" style="display:none">
+				<p:row>
+					<p:column>
+						<h:outputLabel for="registration-username-input" value="#{msg['imaginer.registration.username']}" />
+					</p:column>
+					<p:column>
+						<p:inputText id="registration-username-input" value="#{userRegistrationManagedBean.userToRegister.username}">
+							<p:ajax />
+						</p:inputText>
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column>
+						<h:outputLabel for="registration-email-address-input" value="#{msg['imaginer.registration.email-address']}" />
+					</p:column>
+					<p:column>
+						<p:inputText id="registration-email-address-input"
+							value="#{userRegistrationManagedBean.userToRegister.email-address}">
+							<p:ajax />
+						</p:inputText>
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column>
+						<h:outputLabel for="registration-last-name-input" value="#{msg['imaginer.registration.last-name']}" />
+					</p:column>
+					<p:column>
+						<p:inputText id="registration-last-name-input" value="#{userRegistrationManagedBean.userToRegister.lastName}">
+							<p:ajax />
+						</p:inputText>
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column>
+						<h:outputLabel for="registration-first-name-input" value="#{msg['imaginer.registration.firstName']}" />
+					</p:column>
+					<p:column>
+						<p:inputText id="registration-first-name-input" value="#{userRegistrationManagedBean.userToRegister.firstName}">
+							<p:ajax />
+						</p:inputText>
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column>
+						<h:outputLabel for="registration-birth-date-input" value="#{msg['imaginer.registration.birth-date']}" />
+					</p:column>
+					<p:column>
+						<p:calendar value="#{userRegistrationManagedBean.userToRegister.birthDate}" />
+					</p:column>
+				</p:row>
+			</p:panelGrid>
+		</h:form>
+	</p:panel>
+
+</ui:composition>
