@@ -6,6 +6,8 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 
@@ -16,6 +18,8 @@ import hu.neuron.imaginer.vo.user.UserVO;
 @SessionScoped
 @ManagedBean(name = "userInfoManagedBean")
 public class UserInfoManagedBean implements Serializable {
+
+	Logger logger = LoggerFactory.getLogger("UserInfoManagedBean");
 
 	@ManagedProperty("#{userServiceImpl}")
 	private UserService userService;
@@ -34,7 +38,7 @@ public class UserInfoManagedBean implements Serializable {
 				this.actualUser = userService.findUserByUserName(username);
 			}
 		} catch (ApplicationException e) {
-
+			logger.error("Failed to query user information for username: " + username, e);
 		}
 	}
 

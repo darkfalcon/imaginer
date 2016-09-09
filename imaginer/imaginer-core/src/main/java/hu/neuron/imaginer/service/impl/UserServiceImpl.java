@@ -8,6 +8,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import org.dozer.DozerBeanMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +27,8 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private UserRepository userRepository;
+	
+	Logger logger = LoggerFactory.getLogger("UserServiceImpl");
 
 	public List<UserVO> findAllUsers() throws ApplicationException {
 		final List<User> users = userRepository.findAll();
@@ -37,6 +41,7 @@ public class UserServiceImpl implements UserService {
 			}
 			return usersVOs;
 		} else {
+			logger.info("No users found!");
 			return Collections.emptyList();
 		}
 	}
