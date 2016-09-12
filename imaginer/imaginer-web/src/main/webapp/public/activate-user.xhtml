@@ -1,0 +1,27 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:p="http://primefaces.org/ui" template="/templates/mainLayout.xhtml">
+
+	<ui:define name="content">
+		<p:panel id="activate-user-panel">
+			<h:form>
+				<h:outputText value="#{msg['imaginer.registration.activate-account']}" />
+				<h:outputText value="#{msg['imaginer.common.wait']}" />
+
+				<h:outputText value="#{param['token']}" />
+
+				<h:outputScript>
+					$(document).ready(function() {
+						setTimeout(function() {
+							activateUser([ {
+								name : 'token',
+								value : '#{param['token']}'
+							} ]);
+						}, 2000);
+					});
+				</h:outputScript>
+				<p:remoteCommand name="activateUser" actionListener="#{userActivationManagedBean.activateUser}" autoRun="false" />
+			</h:form>
+		</p:panel>
+	</ui:define>
+</ui:composition>

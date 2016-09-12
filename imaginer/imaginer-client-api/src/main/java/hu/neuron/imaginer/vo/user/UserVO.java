@@ -18,6 +18,8 @@ public class UserVO implements Serializable {
 	private String emailAddress;
 
 	private Date birthDate;
+	
+	private boolean activated;
 
 	public UserVO() {
 		super();
@@ -75,9 +77,17 @@ public class UserVO implements Serializable {
 		this.id = id;
 	}
 
+	public boolean isActivated() {
+		return activated;
+	}
+
+	public void setActivated(boolean activated) {
+		this.activated = activated;
+	}
+
 	@Override
 	public String toString() {
 		return "UserVO [id=" + id + ", username=" + username + ", firstName=" + firstName + ", lastName=" + lastName
-				+ ", emailAddress=" + emailAddress + ", birthDate=" + birthDate + "]";
+				+ ", emailAddress=" + emailAddress + ", birthDate=" + birthDate + ", activated=" + activated + "]";
 	}
 }

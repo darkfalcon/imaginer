@@ -15,5 +15,7 @@ public interface UserService {
 	
 	public UserVO findUserByEmailAddress(String emailAddress) throws ApplicationException;
 	
-	public boolean registerUser(UserVO user) throws ApplicationException;
+	public void registerUser(UserVO user) throws ApplicationException;
+	
+	public void activateUser(String token) throws ApplicationException;
 }

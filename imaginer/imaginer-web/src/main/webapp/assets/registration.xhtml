@@ -5,8 +5,8 @@
 		<h:form id="registration-form">
 
 			<p:commandLink value="#{msg['imaginer.registration.create-account']}">
-				<p:ajax listener="#{userRegistrationManagedBean.prepareUserRegistration}" partialSubmit="true" process="@none"
-					update="registration-table" />
+				<p:ajax listener="#{userRegistrationManagedBean.prepareUserRegistration}" partialSubmit="true"
+					update="@form" oncomplete="$('#registration-form\\:registration-table').show()"/>
 			</p:commandLink>
 
 			<p:panelGrid id="registration-table" rendered="#{userRegistrationManagedBean.registrationFormVisible}" style="display:none">
@@ -26,7 +26,7 @@
 					</p:column>
 					<p:column>
 						<p:inputText id="registration-email-address-input"
-							value="#{userRegistrationManagedBean.userToRegister.email-address}">
+							value="#{userRegistrationManagedBean.userToRegister.emailAddress}">
 							<p:ajax />
 						</p:inputText>
 					</p:column>
@@ -43,7 +43,7 @@
 				</p:row>
 				<p:row>
 					<p:column>
-						<h:outputLabel for="registration-first-name-input" value="#{msg['imaginer.registration.firstName']}" />
+						<h:outputLabel for="registration-first-name-input" value="#{msg['imaginer.registration.first-name']}" />
 					</p:column>
 					<p:column>
 						<p:inputText id="registration-first-name-input" value="#{userRegistrationManagedBean.userToRegister.firstName}">
@@ -60,6 +60,8 @@
 					</p:column>
 				</p:row>
 			</p:panelGrid>
+			<p:commandLink styleClass="button login-button" value="#{msg['imaginer.registration.register']}"
+				action="#{userRegistrationManagedBean.registerUser}" />
 		</h:form>
 	</p:panel>
 

@@ -3,6 +3,7 @@ package hu.neuron.imaginer.service.impl;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -12,14 +13,18 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import hu.neuron.imaginer.entity.user.User;
+import hu.neuron.imaginer.entity.user.UserVerificationToken;
 import hu.neuron.imaginer.exception.ApplicationException;
 import hu.neuron.imaginer.repository.user.UserRepository;
+import hu.neuron.imaginer.repository.user.UserVerificationTokenRepository;
 import hu.neuron.imaginer.service.UserService;
 import hu.neuron.imaginer.vo.user.UserVO;
 
 @Service
+@Transactional
 public class UserServiceImpl implements UserService {
 
 	@PersistenceContext
@@ -27,6 +32,9 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private UserRepository userRepository;
+	
+	@Autowired
+	private UserVerificationTokenRepository userVerificationTokenRepository;
 	
 	Logger logger = LoggerFactory.getLogger("UserServiceImpl");
 
@@ -55,12 +63,6 @@ public class UserServiceImpl implements UserService {
 		}
 	}
 
-	public boolean registerUser(UserVO user) throws ApplicationException {
-		User userEntity = new DozerBeanMapper().map(user, User.class);
-		User savedUser = userRepository.save(userEntity);
-		return savedUser != null ? true : false;
-	}
-
 	public UserVO findUserByUserName(String username) throws ApplicationException {
 		User userByUsername = userRepository.findByUsername(username);
 		if (userByUsername != null) {
@@ -80,5 +82,33 @@ public class UserServiceImpl implements UserService {
 					"There is no user found with this email address: " + emailAddress + " in the database!");
 		}
 	}
+	
+	public void registerUser(UserVO user) throws ApplicationException {
+		User userEntity = new DozerBeanMapper().map(user, User.class);
+		User savedUser = userRepository.save(userEntity);
+		if (savedUser != null) {
+			generateUserVerificationToken(savedUser);
+		} else {
+			throw new ApplicationException("Failed to save user verification token for user: " + user.getUsername());
+		}
+	}
+	
+	private void generateUserVerificationToken(User user) throws ApplicationException {
+		String token = UUID.randomUUID().toString();
+		UserVerificationToken userToken = new UserVerificationToken(token, user);
+		UserVerificationToken savedUserToken = userVerificationTokenRepository.save(userToken);
+		if (savedUserToken == null) {
+			throw new ApplicationException("Failed to save user verification token for user: " + user.getUsername());
+		}
+	}
 
+	public void activateUser(String token) throws ApplicationException {
+		UserVerificationToken userToken = userVerificationTokenRepository.findByToken(token);
+		if (userToken != null) {
+			userToken.getUser().setActivated(Boolean.TRUE);
+			userVerificationTokenRepository.save(userToken);
+		} else {
+			throw new ApplicationException("There is no such token: " + token);
+		}
+	}
 }

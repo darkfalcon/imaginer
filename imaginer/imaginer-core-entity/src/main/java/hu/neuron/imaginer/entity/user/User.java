@@ -30,9 +30,12 @@ public class User {
 	
 	@Column(name="birth_date",nullable=false)
 	private Date birthDate;
+	
+	private Boolean activated;
 
 	public User() {
 		super();
+		this.activated = Boolean.FALSE;
 	}
 
 	public Long getId() {
@@ -81,5 +84,13 @@ public class User {
 
 	public void setBirthDate(Date birthDate) {
 		this.birthDate = birthDate;
+	}
+
+	public Boolean getActivated() {
+		return activated;
+	}
+
+	public void setActivated(Boolean activated) {
+		this.activated = activated;
 	}
 }
