@@ -1,0 +1,17 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:p="http://primefaces.org/ui" template="/templates/mainLayout.xhtml">
+	
+	<ui:define name="content">
+		<h:outputFormat value="#{msg['imaginer.registration.successful-registration-title']}" escape="false">
+			<f:param value="#{param['name']}"/>
+		</h:outputFormat>
+		<br />
+		<h:outputText value="#{msg['imaginer.registration.successful-registration-congratulation']}" />
+		<br />
+		<h:outputFormat value="#{msg['imaginer.registration.successful-registration-description']}" escape="false">
+			<f:param value="#{param['email']}"/>
+		</h:outputFormat>
+	</ui:define>
+
+</ui:composition>

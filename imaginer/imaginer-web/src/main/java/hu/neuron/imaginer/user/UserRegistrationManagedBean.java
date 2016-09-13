@@ -23,7 +23,7 @@ public class UserRegistrationManagedBean implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	Logger logger = LoggerFactory.getLogger("RegisterUserManagedBean");
-	
+
 	@ManagedProperty("#{userServiceImpl}")
 	private UserService userService;
 
@@ -34,13 +34,14 @@ public class UserRegistrationManagedBean implements Serializable {
 		this.userToRegister = new UserVO();
 		this.setRegistrationFormVisible(Boolean.TRUE);
 	}
-	
+
 	public String registerUser() {
 		try {
 			userService.registerUser(userToRegister);
-			return "successful-registration";
-		} catch(ApplicationException e) {
-			return "errorPage";
+			return "successful-registration?faces-redirect=true&name=" + userToRegister.getFirstName() + " "
+					+ userToRegister.getLastName() + "&email=" + userToRegister.getEmailAddress();
+		} catch (ApplicationException e) {
+			return "error";
 		}
 	}
 

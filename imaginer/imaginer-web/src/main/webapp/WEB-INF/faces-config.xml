@@ -3,19 +3,30 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd"
 	version="2.2">
+	
+	<application>
+		<el-resolver>org.springframework.web.jsf.el.SpringBeanFacesELResolver</el-resolver>
+		<resource-bundle>
+			<base-name>messages</base-name>
+			<var>msg</var>
+		</resource-bundle>
+		<locale-config>
+			<default-locale>hu</default-locale>
+			<supported-locale>hu</supported-locale>
+			<supported-locale>en</supported-locale>
+		</locale-config>
+	</application>
 
-		<application>
-			<el-resolver>
-				org.springframework.web.jsf.el.SpringBeanFacesELResolver
-			</el-resolver>
-			<resource-bundle>
-				<base-name>messages</base-name>
-				<var>msg</var>
-			</resource-bundle>
-			<locale-config>
-				<default-locale>hu</default-locale>
-				<supported-locale>hu</supported-locale>
-				<supported-locale>en</supported-locale>
-			</locale-config>
-		</application>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>login</from-outcome>
+			<to-view-id>/public/login.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>successful-registration</from-outcome>
+			<to-view-id>/public/successful-registration.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
 </faces-config>

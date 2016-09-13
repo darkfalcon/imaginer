@@ -20,7 +20,7 @@ public class UserActivationManagedBean {
 	@ManagedProperty("#{userServiceImpl}")
 	private UserService userService;
 
-	public String activateUser() {
+	public String activateAccount() {
 		try {
 			String token = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("token");
 			logger.debug("Activating user account with token: " + token);
