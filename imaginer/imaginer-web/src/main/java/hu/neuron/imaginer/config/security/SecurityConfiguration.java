@@ -44,22 +44,27 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .defaultSuccessUrl("/secured/index.xhtml")
                 .and().exceptionHandling().accessDeniedPage("/public/error.xhtml");
     }
-
+    
     @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth)
-            throws Exception {
-        //Configure roles and passwords as in-memory authentication
-        auth.inMemoryAuthentication()
-                .withUser("administrator")
-                .password("pass")
-                .roles("ADMIN");
-        auth.inMemoryAuthentication()
-                .withUser("manager")
-                .password("pass")
-                .roles("MANAGEMENT");
-        auth.inMemoryAuthentication()
-        .withUser("user")
-        .password("pass")
-        .roles("USER");
-    }
+	public void configureGlobal(AuthenticationManagerBuilder auth, AuthenticationProviderImpl authenticationProvider) throws Exception {
+		auth.authenticationProvider(authenticationProvider);
+	}
+
+//    @Autowired
+//    public void configureGlobal(AuthenticationManagerBuilder auth)
+//            throws Exception {
+//        //Configure roles and passwords as in-memory authentication
+//        auth.inMemoryAuthentication()
+//                .withUser("administrator")
+//                .password("pass")
+//                .roles("ADMIN");
+//        auth.inMemoryAuthentication()
+//                .withUser("manager")
+//                .password("pass")
+//                .roles("MANAGEMENT");
+//        auth.inMemoryAuthentication()
+//        .withUser("user")
+//        .password("pass")
+//        .roles("USER");
+//    }
 }

@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import hu.neuron.imaginer.entity.user.User;
 import hu.neuron.imaginer.entity.user.UserVerificationToken;
 import hu.neuron.imaginer.exception.ApplicationException;
+import hu.neuron.imaginer.exception.ErrorType;
 import hu.neuron.imaginer.repository.user.UserRepository;
 import hu.neuron.imaginer.repository.user.UserVerificationTokenRepository;
 import hu.neuron.imaginer.service.UserService;
@@ -32,10 +33,10 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private UserRepository userRepository;
-	
+
 	@Autowired
 	private UserVerificationTokenRepository userVerificationTokenRepository;
-	
+
 	Logger logger = LoggerFactory.getLogger("UserServiceImpl");
 
 	public List<UserVO> findAllUsers() throws ApplicationException {
@@ -59,7 +60,8 @@ public class UserServiceImpl implements UserService {
 		if (userById != null) {
 			return new DozerBeanMapper().map(userById, UserVO.class);
 		} else {
-			throw new ApplicationException("There is no user found with this id: " + id + " in the database!");
+			throw new ApplicationException(ErrorType.NO_USER_WITH_ID,
+					"There is no user found with this id: " + id + " in the database!");
 		}
 	}
 
@@ -68,7 +70,7 @@ public class UserServiceImpl implements UserService {
 		if (userByUsername != null) {
 			return new DozerBeanMapper().map(userByUsername, UserVO.class);
 		} else {
-			throw new ApplicationException(
+			throw new ApplicationException(ErrorType.NO_USER_WITH_USERNAME,
 					"There is no user found with this username: " + username + " in the database!");
 		}
 	}
@@ -78,27 +80,29 @@ public class UserServiceImpl implements UserService {
 		if (userByEmailAddress != null) {
 			return new DozerBeanMapper().map(userByEmailAddress, UserVO.class);
 		} else {
-			throw new ApplicationException(
+			throw new ApplicationException(ErrorType.NO_USER_WITH_EMAIL,
 					"There is no user found with this email address: " + emailAddress + " in the database!");
 		}
 	}
-	
+
 	public void registerUser(UserVO user) throws ApplicationException {
 		User userEntity = new DozerBeanMapper().map(user, User.class);
 		User savedUser = userRepository.save(userEntity);
 		if (savedUser != null) {
 			generateUserVerificationToken(savedUser);
 		} else {
-			throw new ApplicationException("Failed to save user verification token for user: " + user.getUsername());
+			throw new ApplicationException(ErrorType.REGISTRATION_ERROR,
+					"Failed to register user: " + user.getUsername());
 		}
 	}
-	
+
 	private void generateUserVerificationToken(User user) throws ApplicationException {
 		String token = UUID.randomUUID().toString();
 		UserVerificationToken userToken = new UserVerificationToken(token, user);
 		UserVerificationToken savedUserToken = userVerificationTokenRepository.save(userToken);
 		if (savedUserToken == null) {
-			throw new ApplicationException("Failed to save user verification token for user: " + user.getUsername());
+			throw new ApplicationException(ErrorType.TOKEN_CREATION_ERROR,
+					"Failed to save user verification token for user: " + user.getUsername());
 		}
 	}
 
@@ -108,7 +112,7 @@ public class UserServiceImpl implements UserService {
 			userToken.getUser().setActivated(Boolean.TRUE);
 			userVerificationTokenRepository.save(userToken);
 		} else {
-			throw new ApplicationException("There is no such token: " + token);
+			throw new ApplicationException(ErrorType.TOKEN_NOT_FOUND, "There is no such token: " + token);
 		}
 	}
 }

@@ -1,0 +1,11 @@
+<weblogic-web-app xmlns="http://xmlns.oracle.com/weblogic/weblogic-web-app">
+	<container-descriptor>
+		<prefer-web-inf-classes>false</prefer-web-inf-classes>
+		<prefer-application-packages>
+			<package-name>org.jboss.logging.*</package-name>
+		</prefer-application-packages>
+		<prefer-application-resources>
+			<resource-name>org.jboss.logging.*</resource-name>
+		</prefer-application-resources>
+	</container-descriptor>
+</weblogic-web-app>

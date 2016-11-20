@@ -30,6 +30,12 @@
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-core</artifactId>
 				<version>${spring.version}</version>
+				<exclusions>
+					<exclusion>
+						<groupId>commons-logging</groupId>
+						<artifactId>commons-logging</artifactId>
+					</exclusion>
+				</exclusions>
 			</dependency>
 
 			<dependency>
@@ -90,5 +96,7 @@
 		<module>imaginer-client-api</module>
 		<module>imaginer-app</module>
 		<module>imaginer-core-entity</module>
+		<module>imaginer-authentication</module>
+		<module>imaginer-authentication-db</module>
 	</modules>
 </project>

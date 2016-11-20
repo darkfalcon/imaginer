@@ -3,6 +3,8 @@ package hu.neuron.imaginer.exception;
 public class ApplicationException extends RuntimeException {
 
 	private static final long serialVersionUID = 1L;
+	
+	private static ErrorType errorType;
 
 	public ApplicationException() {
 		super();
@@ -12,19 +14,16 @@ public class ApplicationException extends RuntimeException {
 			boolean writableStackTrace) {
 		super(message, cause, enableSuppression, writableStackTrace);
 	}
-
-	public ApplicationException(String message, Throwable cause) {
+	
+	public ApplicationException(ErrorType errorType, String message, Throwable cause) {
 		super(message, cause);
 	}
 
-	public ApplicationException(String message) {
+	public ApplicationException(ErrorType errorType, String message) {
 		super(message);
 	}
 
-	public ApplicationException(Throwable cause) {
-		super(cause);
+	public static ErrorType getErrorType() {
+		return errorType;
 	}
-	
-	
-
 }

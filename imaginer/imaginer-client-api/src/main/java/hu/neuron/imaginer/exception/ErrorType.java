@@ -1,0 +1,11 @@
+package hu.neuron.imaginer.exception;
+
+public enum ErrorType {
+	NO_USER_WITH_ID,
+	NO_USER_WITH_USERNAME,
+	NO_USER_WITH_EMAIL,
+	REGISTRATION_ERROR,
+	TOKEN_CREATION_ERROR,
+	TOKEN_NOT_FOUND,
+	AUTHENTICATION_ERROR
+}
