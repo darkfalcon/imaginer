@@ -4,26 +4,19 @@ public class ApplicationException extends RuntimeException {
 
 	private static final long serialVersionUID = 1L;
 	
-	private static ErrorType errorType;
+	private ErrorType errorType;
 
-	public ApplicationException() {
-		super();
-	}
-
-	public ApplicationException(String message, Throwable cause, boolean enableSuppression,
-			boolean writableStackTrace) {
-		super(message, cause, enableSuppression, writableStackTrace);
-	}
-	
 	public ApplicationException(ErrorType errorType, String message, Throwable cause) {
 		super(message, cause);
+		this.errorType = errorType;
 	}
 
 	public ApplicationException(ErrorType errorType, String message) {
 		super(message);
+		this.errorType = errorType;
 	}
 
-	public static ErrorType getErrorType() {
+	public ErrorType getErrorType() {
 		return errorType;
 	}
 }

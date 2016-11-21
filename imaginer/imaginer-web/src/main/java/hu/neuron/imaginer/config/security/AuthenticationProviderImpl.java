@@ -10,6 +10,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.stereotype.Service;
 
 import hu.neuron.imaginer.authentication.AuthenticationService;
 import hu.neuron.imaginer.authentication.request.AuthenticationRequest;
@@ -17,6 +18,7 @@ import hu.neuron.imaginer.authentication.response.AuthenticationResponse;
 import hu.neuron.imaginer.authentication.response.AuthenticationResponse.AuthenticationResult;
 import hu.neuron.imaginer.service.UserService;
 
+@Service
 public class AuthenticationProviderImpl implements AuthenticationProvider {
 
 	@Autowired

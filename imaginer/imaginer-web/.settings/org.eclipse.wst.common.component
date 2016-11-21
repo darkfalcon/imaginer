@@ -7,6 +7,9 @@
         <dependent-module archiveName="imaginer-client-api-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/imaginer-client-api/imaginer-client-api">
             <dependency-type>uses</dependency-type>
         </dependent-module>
+        <dependent-module archiveName="imaginer-authentication-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/imaginer-authentication/imaginer-authentication">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
         <property name="context-root" value="imaginer-web"/>
         <property name="java-output-path" value="/imaginer-web/target/classes"/>
     </wb-module>
