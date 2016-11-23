@@ -12,6 +12,7 @@ import org.dozer.DozerBeanMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +23,7 @@ import hu.neuron.imaginer.exception.ErrorType;
 import hu.neuron.imaginer.repository.user.UserRepository;
 import hu.neuron.imaginer.repository.user.UserVerificationTokenRepository;
 import hu.neuron.imaginer.service.UserService;
+import hu.neuron.imaginer.vo.user.UserRegistrationVO;
 import hu.neuron.imaginer.vo.user.UserVO;
 
 @Service
@@ -85,8 +87,10 @@ public class UserServiceImpl implements UserService {
 		}
 	}
 
-	public void registerUser(UserVO user) throws ApplicationException {
+	public void registerUser(UserRegistrationVO user) throws ApplicationException {
 		User userEntity = new DozerBeanMapper().map(user, User.class);
+		userEntity.setActivated(Boolean.FALSE);
+		userEntity.setPassword(BCrypt.hashpw(user.getPassword(), BCrypt.gensalt()));
 		User savedUser = userRepository.save(userEntity);
 		if (savedUser != null) {
 			UserVerificationToken verificationToken = generateUserVerificationToken(savedUser);

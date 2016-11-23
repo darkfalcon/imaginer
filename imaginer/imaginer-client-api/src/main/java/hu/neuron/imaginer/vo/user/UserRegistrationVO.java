@@ -1,45 +1,22 @@
-package hu.neuron.imaginer.entity.user;
+package hu.neuron.imaginer.vo.user;
 
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+public class UserRegistrationVO {
 
-@Entity
-@Table(name="user")
-public class User {
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
 	private String username;
-	
-	@Column(name="password",nullable=false)
-	private String password;
 
-	@Column(name="first_name",nullable=false)
 	private String firstName;
 
-	@Column(name="last_name",nullable=false)
 	private String lastName;
-	
-	@Column(name="email_address",nullable=false)
-	private String emailAddress;
-	
-	@Column(name="birth_date",nullable=false)
-	private Date birthDate;
-	
-	private Boolean activated;
 
-	public User() {
-		super();
-		this.activated = Boolean.FALSE;
-	}
+	private String emailAddress;
+
+	private Date birthDate;
+
+	private String password;
 
 	public Long getId() {
 		return id;
@@ -55,14 +32,6 @@ public class User {
 
 	public void setUsername(String username) {
 		this.username = username;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
 	}
 
 	public String getFirstName() {
@@ -97,11 +66,12 @@ public class User {
 		this.birthDate = birthDate;
 	}
 
-	public Boolean getActivated() {
-		return activated;
+	public String getPassword() {
+		return password;
 	}
 
-	public void setActivated(Boolean activated) {
-		this.activated = activated;
+	public void setPassword(String password) {
+		this.password = password;
 	}
+
 }

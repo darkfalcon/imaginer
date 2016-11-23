@@ -10,8 +10,6 @@ import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.dao.DataAccessException;
-import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.datasource.lookup.JndiDataSourceLookup;
@@ -24,7 +22,7 @@ import hu.neuron.imaginer.authentication.response.AuthenticationResponse.Authent
 
 @PropertySource(value = "file:app-config/database-config.properties", ignoreResourceNotFound = false)
 @Service
-public class AuthenticationServiceImpl implements AuthenticationService {
+public class DBAuthenticationServiceImpl implements AuthenticationService {
 
 	@Value("${jdbc.datasource.jndi}")
 	String datasourceJndi;
@@ -33,6 +31,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 		DataSource dataSource = new JndiDataSourceLookup().getDataSource(datasourceJndi);
 
 		NamedParameterJdbcTemplate jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
+		
+		//TODO szedjük fel a teljes usert
 
 		String query = "SELECT 1 FROM user WHERE username = :username AND password = :password";
 

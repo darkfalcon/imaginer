@@ -5,58 +5,83 @@
 		<h:form id="registration-form">
 
 			<p:commandLink value="#{msg['imaginer.registration.create-account']}">
-				<p:ajax listener="#{userRegistrationManagedBean.prepareUserRegistration}" partialSubmit="true"
-					update="@form" oncomplete="$('#registration-form\\:registration-table').show()"/>
+				<p:ajax listener="#{userRegistrationManagedBean.prepareUserRegistration}" partialSubmit="true" update="@form"
+					oncomplete="$('#registration-form\\:registration-table').show()" />
 			</p:commandLink>
 
-			<p:panelGrid id="registration-table" rendered="#{userRegistrationManagedBean.registrationFormVisible}" style="display:none">
+			<p:panelGrid id="registration-table" rendered="#{userRegistrationManagedBean.registrationFormVisible}"
+				style="display:none">
 				<p:row>
 					<p:column>
-						<h:outputLabel for="registration-username-input" value="#{msg['imaginer.registration.username']}" />
+						<h:outputLabel for="registration-username" value="#{msg['imaginer.registration.username']}" />
 					</p:column>
 					<p:column>
-						<p:inputText id="registration-username-input" value="#{userRegistrationManagedBean.userToRegister.username}">
+						<p:inputText id="registration-username" value="#{userRegistrationManagedBean.userToRegister.username}">
 							<p:ajax />
 						</p:inputText>
 					</p:column>
 				</p:row>
 				<p:row>
 					<p:column>
-						<h:outputLabel for="registration-email-address-input" value="#{msg['imaginer.registration.email-address']}" />
+						<h:outputLabel for="registration-password" value="#{msg['imaginer.registration.password']}" />
 					</p:column>
 					<p:column>
-						<p:inputText id="registration-email-address-input"
-							value="#{userRegistrationManagedBean.userToRegister.emailAddress}">
+						<p:password id="registration-password" value="#{userRegistrationManagedBean.password}" feedback="true"
+							promptLabel="#{msg['imaginer.registration.enter-password']}" weakLabel="#{msg['imaginer.password.weak']}"
+							goodLabel="#{msg['imaginer.password.avarage']}" strongLabel="#{msg['imaginer.password.strong']}">
+							<p:ajax />
+						</p:password>
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column>
+						<h:outputLabel for="registration-password-confirm" value="#{msg['imaginer.registration.password-confirm']}" />
+					</p:column>
+					<p:column>
+						<p:password id="registration-password-confirm" value="#{userRegistrationManagedBean.confirmPassword}"
+							feedback="true" promptLabel="#{msg['imaginer.registration.enter-password']}"
+							weakLabel="#{msg['imaginer.password.weak']}" goodLabel="#{msg['imaginer.password.avarage']}"
+							strongLabel="#{msg['imaginer.password.strong']}">
+							<p:ajax />
+						</p:password>
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column>
+						<h:outputLabel for="registration-email-address" value="#{msg['imaginer.registration.email-address']}" />
+					</p:column>
+					<p:column>
+						<p:inputText id="registration-email-address" value="#{userRegistrationManagedBean.userToRegister.emailAddress}">
 							<p:ajax />
 						</p:inputText>
 					</p:column>
 				</p:row>
 				<p:row>
 					<p:column>
-						<h:outputLabel for="registration-last-name-input" value="#{msg['imaginer.registration.last-name']}" />
+						<h:outputLabel for="registration-last-name" value="#{msg['imaginer.registration.last-name']}" />
 					</p:column>
 					<p:column>
-						<p:inputText id="registration-last-name-input" value="#{userRegistrationManagedBean.userToRegister.lastName}">
+						<p:inputText id="registration-last-name" value="#{userRegistrationManagedBean.userToRegister.lastName}">
 							<p:ajax />
 						</p:inputText>
 					</p:column>
 				</p:row>
 				<p:row>
 					<p:column>
-						<h:outputLabel for="registration-first-name-input" value="#{msg['imaginer.registration.first-name']}" />
+						<h:outputLabel for="registration-first-name" value="#{msg['imaginer.registration.first-name']}" />
 					</p:column>
 					<p:column>
-						<p:inputText id="registration-first-name-input" value="#{userRegistrationManagedBean.userToRegister.firstName}">
+						<p:inputText id="registration-first-name" value="#{userRegistrationManagedBean.userToRegister.firstName}">
 							<p:ajax />
 						</p:inputText>
 					</p:column>
 				</p:row>
 				<p:row>
 					<p:column>
-						<h:outputLabel for="registration-birth-date-input" value="#{msg['imaginer.registration.birth-date']}" />
+						<h:outputLabel for="registration-birth-date" value="#{msg['imaginer.registration.birth-date']}" />
 					</p:column>
 					<p:column>
-						<p:calendar value="#{userRegistrationManagedBean.userToRegister.birthDate}" />
+						<p:calendar id="registration-birth-date" value="#{userRegistrationManagedBean.userToRegister.birthDate}" />
 					</p:column>
 				</p:row>
 			</p:panelGrid>
