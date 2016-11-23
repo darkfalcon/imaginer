@@ -35,7 +35,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 //Permit access for all to error and denied views
                 // Only access with admin role
                 .antMatchers("/secured/**")
-                .hasAnyRole("USER", "ADMIN", "MANAGER")
+                .hasAnyAuthority("USER", "ADMIN", "MANAGER")
                 //If user doesn't have permission, forward him to login page
                 .and()
                 .formLogin()

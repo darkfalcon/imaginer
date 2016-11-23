@@ -29,8 +29,7 @@ public class UserInfoManagedBean implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	public void initUserInfo() {
-		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		String username = user.getUsername();
+		String username = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		try {
 			if (username.contains("@")) {
 				this.actualUser = userService.findUserByEmailAddress(username);

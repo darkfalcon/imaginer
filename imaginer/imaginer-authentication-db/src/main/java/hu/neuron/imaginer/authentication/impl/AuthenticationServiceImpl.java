@@ -1,11 +1,18 @@
 package hu.neuron.imaginer.authentication.impl;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.ResultSetExtractor;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.datasource.lookup.JndiDataSourceLookup;
 import org.springframework.stereotype.Service;
@@ -29,14 +36,23 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
 		String query = "SELECT 1 FROM user WHERE username = :username AND password = :password";
 
-		Integer result = jdbcTemplate.queryForObject(query, new HashMap<String, Object>() {
+		Map<String, Object> paramMap = new HashMap<String, Object>() {
+			private static final long serialVersionUID = 1L;
 			{
 				put("username", request.getUsername());
 				put("password", request.getPassword());
 			}
-		}, Integer.class);
+		};
+		
+		List<Integer> result = jdbcTemplate.query(query, paramMap, new RowMapper<Integer>() {
 
-		if (result != null && !result.equals(1)) {
+			public Integer mapRow(ResultSet rs, int arg) throws SQLException {
+				return rs.getInt(1);
+			}
+			
+		});
+
+		if (result == null || result.size() != 1) {
 			return new AuthenticationResponse(AuthenticationResult.FAILED);
 		} else {
 			return new AuthenticationResponse(AuthenticationResult.SUCCESS);

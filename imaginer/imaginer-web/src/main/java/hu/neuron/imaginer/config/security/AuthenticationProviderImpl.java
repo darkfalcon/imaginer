@@ -10,6 +10,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 
 import hu.neuron.imaginer.authentication.AuthenticationService;
@@ -43,12 +44,14 @@ public class AuthenticationProviderImpl implements AuthenticationProvider {
 
 	private List<GrantedAuthority> getAuthorities(String username) {
 		List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
+		grantedAuthorities.add(new SimpleGrantedAuthority("USER"));
+		grantedAuthorities.add(new SimpleGrantedAuthority("ADMIN"));
 		return grantedAuthorities;
 	}
 
 	@Override
-	public boolean supports(Class<?> arg0) {
-		return true;
+	public boolean supports(Class<?> authentication) {
+		return authentication.equals(UsernamePasswordAuthenticationToken.class);
 	}
 
 }
