@@ -1,4 +1,4 @@
-package hu.neuron.imaginer.service.impl;
+package hu.neuron.imaginer.user;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -89,21 +89,22 @@ public class UserServiceImpl implements UserService {
 		User userEntity = new DozerBeanMapper().map(user, User.class);
 		User savedUser = userRepository.save(userEntity);
 		if (savedUser != null) {
-			generateUserVerificationToken(savedUser);
+			UserVerificationToken verificationToken = generateUserVerificationToken(savedUser);
+			
 		} else {
 			throw new ApplicationException(ErrorType.REGISTRATION_ERROR,
 					"Failed to register user: " + user.getUsername());
 		}
 	}
 
-	private void generateUserVerificationToken(User user) throws ApplicationException {
+	private UserVerificationToken generateUserVerificationToken(User user) throws ApplicationException {
 		String token = UUID.randomUUID().toString();
-		UserVerificationToken userToken = new UserVerificationToken(token, user);
-		UserVerificationToken savedUserToken = userVerificationTokenRepository.save(userToken);
+		UserVerificationToken savedUserToken = userVerificationTokenRepository.save(new UserVerificationToken(token, user));
 		if (savedUserToken == null) {
 			throw new ApplicationException(ErrorType.TOKEN_CREATION_ERROR,
 					"Failed to save user verification token for user: " + user.getUsername());
 		}
+		return savedUserToken;
 	}
 
 	public void activateUser(String token) throws ApplicationException {
