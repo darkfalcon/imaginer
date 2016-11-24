@@ -20,8 +20,6 @@ public class UserVO implements Serializable {
 	private Date birthDate;
 	
 	private boolean activated;
-	
-	private boolean password;
 
 	public UserVO() {
 		super();
@@ -85,14 +83,6 @@ public class UserVO implements Serializable {
 
 	public void setActivated(boolean activated) {
 		this.activated = activated;
-	}
-
-	public boolean isPassword() {
-		return password;
-	}
-
-	public void setPassword(boolean password) {
-		this.password = password;
 	}
 
 	@Override

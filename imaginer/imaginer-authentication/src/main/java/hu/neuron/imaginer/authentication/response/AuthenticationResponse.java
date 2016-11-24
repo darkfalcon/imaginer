@@ -14,6 +14,6 @@ public class AuthenticationResponse {
 	}
 
 	public static enum AuthenticationResult {
-		SUCCESS, FAILED
+		SUCCESS, USER_NOT_FOUND, NOT_ACTIVATED, INVALID_PASSWORD
 	}
 }

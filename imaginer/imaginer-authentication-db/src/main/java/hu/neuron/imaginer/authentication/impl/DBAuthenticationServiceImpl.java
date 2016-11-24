@@ -13,6 +13,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.datasource.lookup.JndiDataSourceLookup;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
 import hu.neuron.imaginer.authentication.AuthenticationService;
@@ -31,32 +32,58 @@ public class DBAuthenticationServiceImpl implements AuthenticationService {
 		DataSource dataSource = new JndiDataSourceLookup().getDataSource(datasourceJndi);
 
 		NamedParameterJdbcTemplate jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
-		
-		//TODO szedjük fel a teljes usert
 
-		String query = "SELECT 1 FROM user WHERE username = :username AND password = :password";
+		// TODO szedjük fel a teljes usert
+
+		String query = "SELECT password, activated FROM user WHERE username = :username";
 
 		Map<String, Object> paramMap = new HashMap<String, Object>() {
 			private static final long serialVersionUID = 1L;
+
 			{
 				put("username", request.getUsername());
-				put("password", request.getPassword());
 			}
 		};
-		
-		List<Integer> result = jdbcTemplate.query(query, paramMap, new RowMapper<Integer>() {
 
-			public Integer mapRow(ResultSet rs, int arg) throws SQLException {
-				return rs.getInt(1);
+		List<UserAuthenticationData> result = jdbcTemplate.query(query, paramMap, new RowMapper<UserAuthenticationData>() {
+
+			public UserAuthenticationData mapRow(ResultSet rs, int arg) throws SQLException {
+				return new UserAuthenticationData(rs.getString(1), rs.getBoolean(2));
 			}
-			
 		});
 
 		if (result == null || result.size() != 1) {
-			return new AuthenticationResponse(AuthenticationResult.FAILED);
+			return new AuthenticationResponse(AuthenticationResult.USER_NOT_FOUND);
 		} else {
-			return new AuthenticationResponse(AuthenticationResult.SUCCESS);
+			UserAuthenticationData autData = result.get(0);
+			if (BCrypt.checkpw(request.getPassword(), autData.getPassword())) {
+				if (autData.getActivated()) {
+					return new AuthenticationResponse(AuthenticationResult.SUCCESS);
+				} else {
+					return new AuthenticationResponse(AuthenticationResult.NOT_ACTIVATED);
+				}
+			} else {
+				return new AuthenticationResponse(AuthenticationResult.INVALID_PASSWORD);
+			}
 		}
 	}
 
+	private static class UserAuthenticationData {
+		private String password;
+		private Boolean activated;
+
+		public UserAuthenticationData(String password, Boolean activated) {
+			super();
+			this.password = password;
+			this.activated = activated;
+		}
+
+		public String getPassword() {
+			return password;
+		}
+
+		public Boolean getActivated() {
+			return activated;
+		}
+	}
 }
