@@ -19,11 +19,15 @@
 		<!-- Styles for ImaginerWEB -->
 		<link type="text/css" rel="stylesheet"
 			href="#{facesContext.externalContext.requestContextPath}/resources/style/imaginer.css" />
-		<!-- Javascripts for ImaginerWEB -->
-		<h:outputScript name="imaginer.js" library="js" />
-
+		<link href="#{facesContext.externalContext.requestContextPath}/resources/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen" />
+		<!-- End of styles for ImaginerWEB -->
 	</h:head>
 	<h:body>
+		<!-- Javascripts for ImaginerWEB -->
+		<h:outputScript name="imaginer.js" library="js" />
+		<h:outputScript name="jquery-3.1.1.min.js" library="jquery"/>
+    	<h:outputScript name="bootstrap.min.js" library="bootstrap/js"/>
+		<!-- End of javascripts for ImaginerWEB -->
 		<ui:insert name="content" />
 	</h:body>
 </f:view>
