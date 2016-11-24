@@ -33,8 +33,6 @@ public class DBAuthenticationServiceImpl implements AuthenticationService {
 
 		NamedParameterJdbcTemplate jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
 
-		// TODO szedjük fel a teljes usert
-
 		String query = "SELECT password, activated FROM user WHERE username = :username";
 
 		Map<String, Object> paramMap = new HashMap<String, Object>() {

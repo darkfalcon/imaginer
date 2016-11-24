@@ -115,7 +115,8 @@ public class UserServiceImpl implements UserService {
 		UserVerificationToken userToken = userVerificationTokenRepository.findByToken(token);
 		if (userToken != null) {
 			userToken.getUser().setActivated(Boolean.TRUE);
-			userVerificationTokenRepository.save(userToken);
+			userRepository.save(userToken.getUser());
+			userVerificationTokenRepository.delete(userToken);
 		} else {
 			throw new ApplicationException(ErrorType.TOKEN_NOT_FOUND, "There is no such token: " + token);
 		}

@@ -13,7 +13,7 @@
 				style="display:none">
 				<p:row>
 					<p:column>
-						<h:outputLabel for="registration-username" value="#{msg['imaginer.registration.username']}" />
+						<h:outputLabel for="registration-username" value="#{msg['imaginer.common.username']}" />
 					</p:column>
 					<p:column>
 						<p:inputText id="registration-username" value="#{userRegistrationManagedBean.userToRegister.username}">
@@ -48,7 +48,7 @@
 				</p:row>
 				<p:row>
 					<p:column>
-						<h:outputLabel for="registration-email-address" value="#{msg['imaginer.registration.email-address']}" />
+						<h:outputLabel for="registration-email-address" value="#{msg['imaginer.common.email-address']}" />
 					</p:column>
 					<p:column>
 						<p:inputText id="registration-email-address" value="#{userRegistrationManagedBean.userToRegister.emailAddress}">
@@ -58,7 +58,7 @@
 				</p:row>
 				<p:row>
 					<p:column>
-						<h:outputLabel for="registration-last-name" value="#{msg['imaginer.registration.last-name']}" />
+						<h:outputLabel for="registration-last-name" value="#{msg['imaginer.common.last-name']}" />
 					</p:column>
 					<p:column>
 						<p:inputText id="registration-last-name" value="#{userRegistrationManagedBean.userToRegister.lastName}">
@@ -68,7 +68,7 @@
 				</p:row>
 				<p:row>
 					<p:column>
-						<h:outputLabel for="registration-first-name" value="#{msg['imaginer.registration.first-name']}" />
+						<h:outputLabel for="registration-first-name" value="#{msg['imaginer.common.first-name']}" />
 					</p:column>
 					<p:column>
 						<p:inputText id="registration-first-name" value="#{userRegistrationManagedBean.userToRegister.firstName}">
@@ -78,15 +78,19 @@
 				</p:row>
 				<p:row>
 					<p:column>
-						<h:outputLabel for="registration-birth-date" value="#{msg['imaginer.registration.birth-date']}" />
+						<h:outputLabel for="registration-birth-date" value="#{msg['imaginer.common.birth-date']}" />
 					</p:column>
 					<p:column>
 						<p:calendar id="registration-birth-date" value="#{userRegistrationManagedBean.userToRegister.birthDate}" />
 					</p:column>
 				</p:row>
+				<p:row>
+					<p:column>
+						<p:commandButton styleClass="button login-button" value="#{msg['imaginer.registration.register']}"
+							action="#{userRegistrationManagedBean.registerUser}" />
+					</p:column>
+				</p:row>
 			</p:panelGrid>
-			<p:commandLink styleClass="button login-button" value="#{msg['imaginer.registration.register']}"
-				action="#{userRegistrationManagedBean.registerUser}" />
 		</h:form>
 	</p:panel>
 
