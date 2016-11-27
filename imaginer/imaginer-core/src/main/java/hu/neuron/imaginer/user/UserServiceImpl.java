@@ -22,9 +22,9 @@ import hu.neuron.imaginer.exception.ApplicationException;
 import hu.neuron.imaginer.exception.ErrorType;
 import hu.neuron.imaginer.repository.user.UserRepository;
 import hu.neuron.imaginer.repository.user.UserVerificationTokenRepository;
-import hu.neuron.imaginer.service.UserService;
-import hu.neuron.imaginer.vo.user.UserRegistrationVO;
-import hu.neuron.imaginer.vo.user.UserVO;
+import hu.neuron.imaginer.user.service.UserService;
+import hu.neuron.imaginer.user.vo.UserRegistrationVO;
+import hu.neuron.imaginer.user.vo.UserVO;
 
 @Service
 @Transactional

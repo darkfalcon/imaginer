@@ -12,8 +12,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 
 import hu.neuron.imaginer.exception.ApplicationException;
-import hu.neuron.imaginer.service.UserService;
-import hu.neuron.imaginer.vo.user.UserVO;
+import hu.neuron.imaginer.user.service.UserService;
+import hu.neuron.imaginer.user.vo.UserVO;
 
 @SessionScoped
 @ManagedBean(name = "userInfoManagedBean")

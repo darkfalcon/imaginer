@@ -19,7 +19,7 @@ import org.springframework.stereotype.Service;
 import hu.neuron.imaginer.authentication.AuthenticationService;
 import hu.neuron.imaginer.authentication.request.AuthenticationRequest;
 import hu.neuron.imaginer.authentication.response.AuthenticationResponse;
-import hu.neuron.imaginer.service.UserService;
+import hu.neuron.imaginer.user.service.UserService;
 
 @Service
 public class AuthenticationProviderImpl implements AuthenticationProvider {

@@ -1,4 +1,4 @@
-package hu.neuron.imaginer.vo.user;
+package hu.neuron.imaginer.user.vo;
 
 import java.io.Serializable;
 import java.util.Date;

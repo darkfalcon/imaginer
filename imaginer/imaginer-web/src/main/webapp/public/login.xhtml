@@ -1,26 +1,34 @@
-<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:c="http://java.sun.com/jstl/core"
-	xmlns:p="http://primefaces.org/ui" template="/templates/mainLayout.xhtml">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="/templates/mainLayout.xhtml">
 
 	<ui:define name="content">
-		<h:outputLabel value="${SPRING_SECURITY_LAST_EXCEPTION.message}" />
-		<form id="login_form" action="#{request.contextPath}/login" method="post">
-			<p>
-				<label for="j_username" class="login-form-tag">#{msg['imaginer.common.username']}</label> <input type="text" id="username" name="username"
-					class="ui-corner-all" required="required" />
-			</p>
-			<p>
-				<label for="j_password" class="login-form-tag">#{msg['imaginer.registration.password']}</label> <input type="password" id="password" name="password"
-					class="ui-corner-all" required="required" />
-			</p>
-			<p>
-				<button type="submit" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only">
-					<span class="ui-button-text">Login</span>
-				</button>
-			</p>
-		</form>
-			
+		<p:panel>
+			<h:outputLabel value="${SPRING_SECURITY_LAST_EXCEPTION.message}" />
+			<form id="login_form" action="#{request.contextPath}/login"
+				method="post">
+				<p>
+					<label for="j_username" class="login-form-tag">#{msg['imaginer.common.username']}</label>
+					<input type="text" id="username" name="username"
+						class="ui-corner-all" required="required" />
+				</p>
+				<p>
+					<label for="j_password" class="login-form-tag">#{msg['imaginer.common.password']}</label>
+					<input type="password" id="password" name="password"
+						class="ui-corner-all" required="required" />
+				</p>
+				<p>
+					<button type="submit"
+						class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only">
+						<span class="ui-button-text">Login</span>
+					</button>
+				</p>
+			</form>
+		</p:panel>
 		<ui:include src="/assets/registration.xhtml" />
-		
 	</ui:define>
 </ui:composition>

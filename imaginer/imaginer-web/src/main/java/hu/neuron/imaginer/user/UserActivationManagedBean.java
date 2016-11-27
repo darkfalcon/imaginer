@@ -9,7 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import hu.neuron.imaginer.exception.ApplicationException;
-import hu.neuron.imaginer.service.UserService;
+import hu.neuron.imaginer.user.service.UserService;
 
 @RequestScoped
 @ManagedBean

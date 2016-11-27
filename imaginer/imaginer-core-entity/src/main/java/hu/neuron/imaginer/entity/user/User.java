@@ -17,23 +17,25 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
+	@Column(nullable=false, length = 32)
 	private String username;
 	
-	@Column(name="password",nullable=false)
+	@Column(nullable=false)
 	private String password;
 
-	@Column(name="first_name")
+	@Column(name="first_name", length = 32)
 	private String firstName;
 
-	@Column(name="last_name")
+	@Column(name="last_name", length = 32)
 	private String lastName;
 	
-	@Column(name="email_address",nullable=false)
+	@Column(name="email_address", nullable=false, length = 256)
 	private String emailAddress;
 	
-	@Column(name="birth_date",nullable=false)
+	@Column(name="birth_date", nullable=false)
 	private Date birthDate;
 	
+	@Column(nullable=false)
 	private Boolean activated;
 
 	public User() {
