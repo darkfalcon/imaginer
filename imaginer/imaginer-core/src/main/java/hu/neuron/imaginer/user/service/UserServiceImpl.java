@@ -1,4 +1,4 @@
-package hu.neuron.imaginer.user;
+package hu.neuron.imaginer.user.service;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -20,8 +20,8 @@ import hu.neuron.imaginer.entity.user.User;
 import hu.neuron.imaginer.entity.user.UserVerificationToken;
 import hu.neuron.imaginer.exception.ApplicationException;
 import hu.neuron.imaginer.exception.ErrorType;
-import hu.neuron.imaginer.repository.user.UserRepository;
-import hu.neuron.imaginer.repository.user.UserVerificationTokenRepository;
+import hu.neuron.imaginer.user.repository.UserRepository;
+import hu.neuron.imaginer.user.repository.UserVerificationTokenRepository;
 import hu.neuron.imaginer.user.service.UserService;
 import hu.neuron.imaginer.user.vo.UserRegistrationVO;
 import hu.neuron.imaginer.user.vo.UserVO;

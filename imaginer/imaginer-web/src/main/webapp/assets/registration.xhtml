@@ -30,7 +30,9 @@
 						<p:password id="registration-password" value="#{userRegistrationManagedBean.userToRegister.password}"
 							feedback="true" promptLabel="#{msg['imaginer.registration.enter-password']}"
 							weakLabel="#{msg['imaginer.password.weak']}" goodLabel="#{msg['imaginer.password.avarage']}"
-							strongLabel="#{msg['imaginer.password.strong']}">
+							strongLabel="#{msg['imaginer.password.strong']}" match="registration-password-confirm" required="true">
+							<f:validator binding="#{inputValidator}" />
+							<f:attribute name="type" value="PASSWORD" />
 							<p:ajax />
 						</p:password>
 					</p:column>
@@ -43,7 +45,7 @@
 						<p:password id="registration-password-confirm" value="#{userRegistrationManagedBean.userToRegister.password}"
 							feedback="true" promptLabel="#{msg['imaginer.registration.enter-password']}"
 							weakLabel="#{msg['imaginer.password.weak']}" goodLabel="#{msg['imaginer.password.avarage']}"
-							strongLabel="#{msg['imaginer.password.strong']}">
+							strongLabel="#{msg['imaginer.password.strong']}" required="true">
 							<p:ajax />
 						</p:password>
 					</p:column>
@@ -54,6 +56,8 @@
 					</p:column>
 					<p:column>
 						<p:inputText id="registration-email-address" value="#{userRegistrationManagedBean.userToRegister.emailAddress}">
+							<f:validator binding="#{inputValidator}" />
+							<f:attribute name="type" value="EMAIL" />
 							<p:ajax />
 						</p:inputText>
 					</p:column>
@@ -64,6 +68,8 @@
 					</p:column>
 					<p:column>
 						<p:inputText id="registration-last-name" value="#{userRegistrationManagedBean.userToRegister.lastName}">
+							<f:validator binding="#{inputValidator}" />
+							<f:attribute name="type" value="LASTNAME" />
 							<p:ajax />
 						</p:inputText>
 					</p:column>
@@ -74,6 +80,8 @@
 					</p:column>
 					<p:column>
 						<p:inputText id="registration-first-name" value="#{userRegistrationManagedBean.userToRegister.firstName}">
+							<f:validator binding="#{inputValidator}" />
+							<f:attribute name="type" value="FIRSTNAME" />
 							<p:ajax />
 						</p:inputText>
 					</p:column>

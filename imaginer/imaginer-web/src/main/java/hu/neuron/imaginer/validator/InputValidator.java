@@ -11,8 +11,8 @@ import javax.faces.validator.ValidatorException;
 
 import hu.neuron.imaginer.validation.service.ValidatorService;
 import hu.neuron.imaginer.validation.vo.ValidationFieldType;
-import hu.neuron.imaginer.validation.vo.ValidationRequestVO;
-import hu.neuron.imaginer.validation.vo.ValidationResultVO;
+import hu.neuron.imaginer.validation.vo.ValidationRequest;
+import hu.neuron.imaginer.validation.vo.ValidationResult;
 
 @RequestScoped
 @ManagedBean(name = "inputValidator")
@@ -24,8 +24,8 @@ public class InputValidator implements Validator {
 	@Override
 	public void validate(FacesContext facesContext, UIComponent component, Object object) throws ValidatorException {
 		String type = (String) component.getAttributes().get("type");
-		ValidationResultVO result = validatorService
-				.validateInput(new ValidationRequestVO(ValidationFieldType.valueOf(type), object.toString()));
+		ValidationResult result = validatorService
+				.validateInput(new ValidationRequest(ValidationFieldType.valueOf(type), object.toString()));
 		if (!result.isValid()) {
 			throw new ValidatorException(new FacesMessage("field invalid"));
 		}

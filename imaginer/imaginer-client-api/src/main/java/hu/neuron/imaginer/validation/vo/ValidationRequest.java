@@ -1,15 +1,15 @@
 package hu.neuron.imaginer.validation.vo;
 
-public class ValidationRequestVO {
+public class ValidationRequest {
 
 	private ValidationFieldType type;
 	private String value;
 
-	public ValidationRequestVO() {
+	public ValidationRequest() {
 		super();
 	}
 
-	public ValidationRequestVO(ValidationFieldType type, String value) {
+	public ValidationRequest(ValidationFieldType type, String value) {
 		super();
 		this.type = type;
 		this.value = value;

@@ -1,14 +1,14 @@
 package hu.neuron.imaginer.validation.vo;
 
-public class ValidationResultVO {
+public class ValidationResult {
 
 	private boolean valid;
 
-	public ValidationResultVO() {
+	public ValidationResult() {
 		super();
 	}
 
-	public ValidationResultVO(boolean valid) {
+	public ValidationResult(boolean valid) {
 		super();
 		this.valid = valid;
 	}

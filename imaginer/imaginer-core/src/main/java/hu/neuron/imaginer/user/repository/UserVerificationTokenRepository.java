@@ -1,4 +1,4 @@
-package hu.neuron.imaginer.repository.user;
+package hu.neuron.imaginer.user.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
