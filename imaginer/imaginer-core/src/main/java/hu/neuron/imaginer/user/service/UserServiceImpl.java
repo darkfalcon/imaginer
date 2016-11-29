@@ -89,19 +89,17 @@ public class UserServiceImpl implements UserService {
 
 	public void registerUser(UserRegistrationVO user) throws ApplicationException {
 		User userEntity = new DozerBeanMapper().map(user, User.class);
-		userEntity.setActivated(Boolean.FALSE);
 		userEntity.setPassword(BCrypt.hashpw(user.getPassword(), BCrypt.gensalt()));
 		User savedUser = userRepository.save(userEntity);
 		if (savedUser != null) {
-			UserVerificationToken verificationToken = generateUserVerificationToken(savedUser);
-			
+			//UserVerificationToken verificationToken = createUserVerificationToken(savedUser);
 		} else {
 			throw new ApplicationException(ErrorType.REGISTRATION_ERROR,
 					"Failed to register user: " + user.getUsername());
 		}
 	}
 
-	private UserVerificationToken generateUserVerificationToken(User user) throws ApplicationException {
+	private UserVerificationToken createUserVerificationToken(User user) throws ApplicationException {
 		String token = UUID.randomUUID().toString();
 		UserVerificationToken savedUserToken = userVerificationTokenRepository.save(new UserVerificationToken(token, user));
 		if (savedUserToken == null) {
