@@ -17,12 +17,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import hu.neuron.imaginer.entity.user.User;
+import hu.neuron.imaginer.entity.user.UserGroup;
 import hu.neuron.imaginer.entity.user.UserVerificationToken;
 import hu.neuron.imaginer.exception.ApplicationException;
 import hu.neuron.imaginer.exception.ErrorType;
+import hu.neuron.imaginer.user.repository.UserGroupRepository;
 import hu.neuron.imaginer.user.repository.UserRepository;
 import hu.neuron.imaginer.user.repository.UserVerificationTokenRepository;
 import hu.neuron.imaginer.user.service.UserService;
+import hu.neuron.imaginer.user.vo.UserGroupVO;
 import hu.neuron.imaginer.user.vo.UserRegistrationVO;
 import hu.neuron.imaginer.user.vo.UserVO;
 
@@ -35,6 +38,9 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private UserRepository userRepository;
+
+	@Autowired
+	private UserGroupRepository userGroupRepository;
 
 	@Autowired
 	private UserVerificationTokenRepository userVerificationTokenRepository;
@@ -88,20 +94,23 @@ public class UserServiceImpl implements UserService {
 	}
 
 	public void registerUser(UserRegistrationVO user) throws ApplicationException {
-		User userEntity = new DozerBeanMapper().map(user, User.class);
-		userEntity.setPassword(BCrypt.hashpw(user.getPassword(), BCrypt.gensalt()));
-		User savedUser = userRepository.save(userEntity);
-		if (savedUser != null) {
-			//UserVerificationToken verificationToken = createUserVerificationToken(savedUser);
-		} else {
+		try {
+			User userEntity = new DozerBeanMapper().map(user, User.class);
+			userEntity.setPassword(BCrypt.hashpw(user.getPassword(), BCrypt.gensalt()));
+			List<UserGroup> userGroups = new ArrayList<>();
+			userGroups.add(userGroupRepository.findByCode("USER"));
+			userEntity.setUserGroups(userGroups);
+			userRepository.save(userEntity);
+		} catch (Exception e) {
 			throw new ApplicationException(ErrorType.REGISTRATION_ERROR,
-					"Failed to register user: " + user.getUsername());
+						"Failed to register user: " + user.getUsername(), e);
 		}
 	}
 
 	private UserVerificationToken createUserVerificationToken(User user) throws ApplicationException {
 		String token = UUID.randomUUID().toString();
-		UserVerificationToken savedUserToken = userVerificationTokenRepository.save(new UserVerificationToken(token, user));
+		UserVerificationToken savedUserToken = userVerificationTokenRepository
+				.save(new UserVerificationToken(token, user));
 		if (savedUserToken == null) {
 			throw new ApplicationException(ErrorType.TOKEN_CREATION_ERROR,
 					"Failed to save user verification token for user: " + user.getUsername());
@@ -118,5 +127,10 @@ public class UserServiceImpl implements UserService {
 		} else {
 			throw new ApplicationException(ErrorType.TOKEN_NOT_FOUND, "There is no such token: " + token);
 		}
+	}
+
+	@Override
+	public List<UserGroupVO> getUserGroupsForUser(String username) throws ApplicationException {
+		return findUserByUserName(username).getUserGroups();
 	}
 }

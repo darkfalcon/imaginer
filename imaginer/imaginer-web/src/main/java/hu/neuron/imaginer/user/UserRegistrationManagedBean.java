@@ -48,8 +48,7 @@ public class UserRegistrationManagedBean implements Serializable {
 		try {
 			userService.registerUser(userToRegister);
 			authenticateUser(userToRegister.getUsername(), userToRegister.getPassword());
-			return "successful-registration?faces-redirect=true&name=" + userToRegister.getFirstName() + " "
-					+ userToRegister.getLastName() + "&email=" + userToRegister.getEmailAddress();
+			return "successful-registration";
 		} catch (ApplicationException e) {
 			return "error";
 		}

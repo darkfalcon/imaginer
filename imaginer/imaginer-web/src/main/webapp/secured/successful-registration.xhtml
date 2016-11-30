@@ -4,14 +4,13 @@
 	
 	<ui:define name="content">
 		<h:outputFormat value="#{msg['imaginer.registration.successful-registration-title']}" escape="false">
-			<f:param value="#{param['name']}"/>
+			<f:param value="#{userManagedBean.visibleName}"/>
 		</h:outputFormat>
 		<br />
 		<h:outputText value="#{msg['imaginer.registration.successful-registration-congratulation']}" />
 		<br />
-		<h:outputFormat value="#{msg['imaginer.registration.successful-registration-description']}" escape="false">
-			<f:param value="#{param['email']}"/>
-		</h:outputFormat>
+		<h:outputText value="#{msg['imaginer.registration.successful-registration-description']}" />
+		<br />
 		<h:link outcome="index" value="#{msg['imaginer.registration.goto.index']}"/>
 	</ui:define>
 

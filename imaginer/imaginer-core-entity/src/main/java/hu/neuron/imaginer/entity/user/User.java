@@ -44,10 +44,8 @@ public class User {
 	@OneToMany(targetEntity = UserGroup.class )
 	@JoinTable(
 			name="user_group_to_user",
-			joinColumns = @JoinColumn(name = "user_group_id"), 
-			inverseJoinColumns = @JoinColumn(name = "user_id"),
-			uniqueConstraints = {
-				    @UniqueConstraint(columnNames = { "user_group_id", "user_id" })})
+			joinColumns = @JoinColumn(name = "user_id"), 
+			inverseJoinColumns = @JoinColumn(name = "user_group_id"))
     private List<UserGroup> userGroups;
 	
 	@Column(nullable=false)

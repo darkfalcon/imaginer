@@ -20,6 +20,7 @@ import hu.neuron.imaginer.authentication.AuthenticationService;
 import hu.neuron.imaginer.authentication.request.AuthenticationRequest;
 import hu.neuron.imaginer.authentication.response.AuthenticationResponse;
 import hu.neuron.imaginer.user.service.UserService;
+import hu.neuron.imaginer.user.vo.UserGroupVO;
 
 @Service
 public class AuthenticationProviderImpl implements AuthenticationProvider {
@@ -52,9 +53,11 @@ public class AuthenticationProviderImpl implements AuthenticationProvider {
 	}
 
 	private List<GrantedAuthority> getAuthorities(String username) {
+		List<UserGroupVO> userGroups = userService.getUserGroupsForUser(username);
 		List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
-		grantedAuthorities.add(new SimpleGrantedAuthority("USER"));
-		grantedAuthorities.add(new SimpleGrantedAuthority("ADMIN"));
+		for (UserGroupVO userGroupVO : userGroups) {
+			grantedAuthorities.add(new SimpleGrantedAuthority(userGroupVO.getCode()));
+		}
 		return grantedAuthorities;
 	}
 

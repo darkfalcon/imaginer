@@ -1,0 +1,2 @@
+insert into user_group values (1, 'USER', 'Normál felhasználó: tud galériát létrehozni, képeket feltölteni és megtekinteni');
+insert into user_group values (2, 'REPORT', 'Riport készítő felhasználó: létező felhasználó, csak a riportok oldalt látja');

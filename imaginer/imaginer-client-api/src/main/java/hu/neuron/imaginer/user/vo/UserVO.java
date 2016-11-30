@@ -2,6 +2,7 @@ package hu.neuron.imaginer.user.vo;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 public class UserVO implements Serializable {
 
@@ -20,6 +21,10 @@ public class UserVO implements Serializable {
 	private Date birthDate;
 	
 	private boolean activated;
+	
+	private boolean disabled;
+	
+	private List<UserGroupVO> userGroups;
 
 	public UserVO() {
 		super();
@@ -85,9 +90,26 @@ public class UserVO implements Serializable {
 		this.activated = activated;
 	}
 
+	public boolean isDisabled() {
+		return disabled;
+	}
+
+	public void setDisabled(boolean disabled) {
+		this.disabled = disabled;
+	}
+
+	public List<UserGroupVO> getUserGroups() {
+		return userGroups;
+	}
+
+	public void setUserGroups(List<UserGroupVO> userGroups) {
+		this.userGroups = userGroups;
+	}
+
 	@Override
 	public String toString() {
 		return "UserVO [id=" + id + ", username=" + username + ", firstName=" + firstName + ", lastName=" + lastName
-				+ ", emailAddress=" + emailAddress + ", birthDate=" + birthDate + ", activated=" + activated + "]";
+				+ ", emailAddress=" + emailAddress + ", birthDate=" + birthDate + ", activated=" + activated
+				+ ", disabled=" + disabled + ", userGroups=" + userGroups + "]";
 	}
 }

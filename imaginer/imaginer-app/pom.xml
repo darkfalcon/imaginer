@@ -32,6 +32,7 @@
 	</dependencies>
 	
 	<build>
+		<finalName>imaginer</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -50,7 +51,7 @@
 					<configuration>
 						<tasks>
 							<copy
-								file="${basedir}/target/${project.artifactId}-${project.parent.version}.war"
+								file="${basedir}/target/imaginer.war"
 								todir="${basedir}/../dist/${project.version}" />
 						</tasks>
 					</configuration>
