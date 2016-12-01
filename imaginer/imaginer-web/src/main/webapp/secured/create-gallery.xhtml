@@ -2,25 +2,28 @@
 	xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:c="http://java.sun.com/jstl/core"
 	xmlns:p="http://primefaces.org/ui" template="/templates/mainLayout.xhtml">
 	<ui:define name="content">
+		<f:event listener="#{galleryManagedBean.initNewGallery}" type="preRenderView"></f:event>
 		<p:panel>
-			<p:panelGrid>
-				<p:row>
-					<p:column>
-						<h:outputText value="#{msg['imaginer.gallery.new.gallery-name']}" />
-					</p:column>
-					<p:column>
-						<p:input value="#{galleryManagedBean.createGallery.name}" />
-					</p:column>
-				</p:row>
-				<p:row>
-					<p:column>
-						<h:outputText value="#{msg['imaginer.gallery.new.gallery-icon']}" />
-					</p:column>
-					<p:column></p:column>
-				</p:row>
-			</p:panelGrid>
-			<p:commandButton value="#{msg['imaginer.common.button.cancel']}" action="#{galleryManagedBean.backToGalleries}" />
-			<p:commandButton value="#{msg['imaginer.common.button.create']}" action="#{galleryManagedBean.createGallery}" />
+			<h:form>
+				<p:panelGrid>
+					<p:row>
+						<p:column>
+							<h:outputText value="#{msg['imaginer.gallery.new.gallery-name']}" />
+						</p:column>
+						<p:column>
+							<p:inputText value="#{galleryManagedBean.newGallery.name}" />
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column>
+							<h:outputText value="#{msg['imaginer.gallery.new.gallery-icon']}" />
+						</p:column>
+						<p:column></p:column>
+					</p:row>
+				</p:panelGrid>
+				<p:button value="#{msg['imaginer.common.button.cancel']}" outcome="index" />
+				<p:commandButton value="#{msg['imaginer.common.button.create']}" action="#{galleryManagedBean.createGallery}" />
+			</h:form>
 		</p:panel>
 	</ui:define>
 </ui:composition>

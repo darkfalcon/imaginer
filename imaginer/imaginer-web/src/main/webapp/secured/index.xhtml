@@ -6,8 +6,8 @@
 		<p:panel>
 			<h:outputText value="#{msg['imaginer.gallery.galleries.title']}" />
 			<hr />
-			<p:dataGrid id="galleries-grid" value="#{galleryManagedBean.galleries}" var="gallery" emptyMessage="msg['imaginer.gallery.empty']"
-				rowIndexVar="rowIndex">
+			<p:dataGrid id="galleries-grid" value="#{galleryManagedBean.galleries}" var="gallery"
+				emptyMessage="msg['imaginer.gallery.empty']" rowIndexVar="rowIndex">
 				<p:commandLink process="@this" update="gallery-info-panel galleries-grid">
 					<p:panel styleClass="gallery-panel #{galleryManagedBean.selectedGallery eq gallery ? 'selected' : ''}">
 						<p:graphicImage url="http://www.primefaces.org/showcase/javax.faces.resource/demo/images/car/Ford.gif.xhtml" />
@@ -16,6 +16,7 @@
 					<f:setPropertyActionListener value="#{gallery}" target="#{galleryManagedBean.selectedGallery}" />
 				</p:commandLink>
 			</p:dataGrid>
+			<p:button outcome="create-gallery" value="#{msg['imaginer.gallery.create-new.button']}" />
 		</p:panel>
 	</ui:define>
 	<ui:define name="right-content">
@@ -29,7 +30,7 @@
 							<h:outputText value="#{msg['imaginer.gallery.info.name']}:" />
 						</p:column>
 						<p:column>
-							<h:outputText value="#{galleryManagedBean.selectedGallery.name}:" />
+							<h:outputText value="#{galleryManagedBean.selectedGallery.name}" />
 						</p:column>
 					</p:row>
 					<p:row>
@@ -37,7 +38,9 @@
 							<h:outputText value="#{msg['imaginer.gallery.info.creation-date']}:" />
 						</p:column>
 						<p:column>
-							<h:outputText value="#{galleryManagedBean.selectedGallery.numberOfImages}:" />
+							<h:outputText value="#{galleryManagedBean.selectedGallery.creationDate}">
+								<f:convertDateTime type="date" pattern="yyyy.MM.dd" />
+							</h:outputText>
 						</p:column>
 					</p:row>
 					<p:row>
@@ -45,7 +48,9 @@
 							<h:outputText value="#{msg['imaginer.gallery.info.last-modification-date']}:" />
 						</p:column>
 						<p:column>
-							<h:outputText value="#{galleryManagedBean.selectedGallery.lastModificationDate}:" />
+							<h:outputText value="#{galleryManagedBean.selectedGallery.lastModificationDate}">
+								<f:convertDateTime type="date" pattern="yyyy.MM.dd" />
+							</h:outputText>
 						</p:column>
 					</p:row>
 					<p:row>
@@ -53,10 +58,11 @@
 							<h:outputText value="#{msg['imaginer.gallery.info.number-of-images']}:" />
 						</p:column>
 						<p:column>
-							<h:outputText value="#{galleryManagedBean.selectedGallery.numberOfImages}:" />
+							<h:outputText value="#{galleryManagedBean.selectedGallery.numberOfImages}" />
 						</p:column>
 					</p:row>
 				</p:panelGrid>
+				<p:button outcome="view-gallery" value="#{msg['imaginer.gallery.view.button']}" />
 			</ui:fragment>
 			<ui:fragment rendered="#{galleryManagedBean.selectedGallery eq null}">
 				<h:outputText value="#{msg['imaginer.gallery.no-gallery-selected']}" />

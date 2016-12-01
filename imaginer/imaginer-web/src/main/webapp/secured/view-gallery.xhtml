@@ -1,0 +1,59 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:p="http://primefaces.org/ui" template="/templates/galleryLayout.xhtml">
+	<ui:define name="title">
+		<h:outputText value="#{galleryManagedBean.selectedGallery.name}" styleClass="page-title" />
+	</ui:define>
+	<ui:define name="left-content">
+		<p:outputPanel id="selected-image-panel">
+			<h:outputText value="#{galleryManagedBean.selectedImage}" styleClass="image-title" />
+			<p:graphicImage url="http://www.primefaces.org/showcase/javax.faces.resource/demo/images/car/Ford.gif.xhtml" />
+			<p:panelGrid rendered="#{galleryManagedBean.selectedImage ne null}">
+				<p:row>
+					<p:column>
+						<h:outputText value="#{msg['imaginer.gallery.images.dimension']}:" />
+					</p:column>
+					<p:column>
+						<h:outputText value="#{galleryManagedBean.selectedImage.dimension}" />
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column>
+						<h:outputText value="#{msg['imaginer.gallery.images.image-format']}:" />
+					</p:column>
+					<p:column>
+						<h:outputText value="#{galleryManagedBean.selectedImage.fileFormat}" />
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column>
+						<h:outputText value="#{msg['imaginer.gallery.images.image-size']}:" />
+					</p:column>
+					<p:column>
+						<h:outputText value="#{galleryManagedBean.selectedImage.formattedSize}" />
+					</p:column>
+				</p:row>
+			</p:panelGrid>
+		</p:outputPanel>
+	</ui:define>
+	<ui:define name="right-content">
+		<p:dataGrid id="images-grid" value="#{galleryManagedBean.selectedGallery.images}" var="image"
+			emptyMessage="#{msg['imaginer.gallery.images.empty']}" rowIndexVar="rowIndex">
+			<p:commandLink process="@this" update="selected-image-panel images-grid">
+				<p:panel styleClass="images-panel #{galleryManagedBean.selectedGallery eq gallery ? 'selected' : ''}">
+					<p:graphicImage url="http://www.primefaces.org/showcase/javax.faces.resource/demo/images/car/Ford.gif.xhtml" />
+					<h:outputText value="#{image.name}" />
+				</p:panel>
+				<f:setPropertyActionListener value="#{image}" target="#{galleryManagedBean.selectedImage}" />
+			</p:commandLink>
+		</p:dataGrid>
+	</ui:define>
+	<ui:define name="action-bar">
+		<h:form id="fileupload-form" prependId="false">
+			<p:fileUpload id="image-uploader" fileUploadListener="#{fileUploadView.handleFileUpload}" mode="simple"
+				dragDropSupport="true" update="messages" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" auto="false" />
+		</h:form>
+		<p:messages id="messages" autoUpdate="true" />
+		<p:button value="#{msg['imaginer.common.button.back']}" outcome="index" />
+	</ui:define>
+</ui:composition>

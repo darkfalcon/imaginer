@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 
-<html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:p="http://primefaces.org/ui">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui">
 
 <f:view contentType="text/html" encoding="UTF-8">
 
@@ -19,16 +16,27 @@
 		<!-- Styles for ImaginerWEB -->
 		<link type="text/css" rel="stylesheet"
 			href="#{facesContext.externalContext.requestContextPath}/resources/style/imaginer.css" />
-		<link href="#{facesContext.externalContext.requestContextPath}/resources/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen" />
+		<link href="#{facesContext.externalContext.requestContextPath}/resources/bootstrap/css/bootstrap.min.css"
+			rel="stylesheet" media="screen" />
 		<!-- End of styles for ImaginerWEB -->
 	</h:head>
 	<h:body>
 		<!-- Javascripts for ImaginerWEB -->
 		<h:outputScript name="imaginer.js" library="js" />
-<!-- 		<h:outputScript name="jquery-3.1.1.min.js" library="jquery"/> -->
-    	<h:outputScript name="bootstrap.min.js" library="bootstrap/js" />
+		<h:outputScript name="jquery/jquery-3.1.1.min.js" />
+		<h:outputScript name="bootstrap/js/bootstrap.min.js" />
 		<!-- End of javascripts for ImaginerWEB -->
-		<ui:insert name="content" />
+		<f:view locale="#{localeManagedBean.locale}">
+			<p:outputPanel styleClass="container">
+				<!-- Begining of content -->
+				<p:panel styleClass="col-xs-6">
+					<ui:insert name="left-content" />
+				</p:panel>
+				<p:panel styleClass="col-xs-6">
+					<ui:insert name="right-content" />
+				</p:panel>
+			</p:outputPanel>
+		</f:view>
 	</h:body>
 </f:view>
 </html>

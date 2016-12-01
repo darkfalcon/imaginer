@@ -2,6 +2,7 @@ package hu.neuron.imaginer.gallery.vo;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 public class GalleryVO implements Serializable {
 
@@ -11,6 +12,7 @@ public class GalleryVO implements Serializable {
 	private Date creationDate;
 	private Date lastModificationDate;
 	private Integer numberOfImages;
+	private List<ImageVO> images;
 
 	public GalleryVO() {
 		super();
@@ -54,5 +56,13 @@ public class GalleryVO implements Serializable {
 
 	public void setNumberOfImages(Integer numberOfImages) {
 		this.numberOfImages = numberOfImages;
+	}
+
+	public List<ImageVO> getImages() {
+		return images;
+	}
+
+	public void setImages(List<ImageVO> images) {
+		this.images = images;
 	}
 }

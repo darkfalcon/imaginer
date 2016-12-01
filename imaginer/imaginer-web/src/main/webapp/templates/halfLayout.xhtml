@@ -23,15 +23,21 @@
 	<h:body>
 		<!-- Javascripts for ImaginerWEB -->
 		<h:outputScript name="imaginer.js" library="js" />
-		<!-- <h:outputScript name="jquery-3.1.1.min.js" library="jquery"/> -->
-		<h:outputScript name="bootstrap.min.js" library="bootstrap/js" />
+		<h:outputScript name="jquery/jquery-3.1.1.min.js" />
+		<h:outputScript name="bootstrap/js/bootstrap.min.js" />
 		<!-- End of javascripts for ImaginerWEB -->
-		<p:outputPanel>
-			<!-- Begining of content -->
-			<ui:include src="/assets/navigation.xhtml" />
-			<ui:insert name="left-content" />
-			<ui:insert name="right-content" />
-		</p:outputPanel>
+		<f:view locale="#{localeManagedBean.locale}">
+			<p:outputPanel styleClass="container">
+				<!-- Begining of content -->
+				<ui:include src="/assets/navigation.xhtml" />
+				<p:panel styleClass="col-xs-6">
+					<ui:insert name="left-content" />
+				</p:panel>
+				<p:panel styleClass="col-xs-6">
+					<ui:insert name="right-content" />
+				</p:panel>
+			</p:outputPanel>
+		</f:view>
 	</h:body>
 </f:view>
 </html>

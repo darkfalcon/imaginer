@@ -4,31 +4,12 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:c="http://java.sun.com/jstl/core"
 	xmlns:p="http://primefaces.org/ui"
-	template="/templates/publicLayout.xhtml">
+	template="/templates/publicHalfLayout.xhtml">
 
-	<ui:define name="content">
-		<p:panel>
-			<h:outputLabel value="${SPRING_SECURITY_LAST_EXCEPTION.message}" />
-			<form id="login_form" action="#{request.contextPath}/login"
-				method="post">
-				<p>
-					<label for="j_username" class="login-form-tag">#{msg['imaginer.common.username']}</label>
-					<input type="text" id="username" name="username"
-						class="ui-corner-all" required="required" />
-				</p>
-				<p>
-					<label for="j_password" class="login-form-tag">#{msg['imaginer.common.password']}</label>
-					<input type="password" id="password" name="password"
-						class="ui-corner-all" required="required" />
-				</p>
-				<p>
-					<button type="submit"
-						class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only">
-						<span class="ui-button-text">#{msg['imaginer.login']}</span>
-					</button>
-				</p>
-			</form>
-		</p:panel>
+	<ui:define name="left-content">
+		<ui:include src="/assets/login-asset.xhtml" />
+	</ui:define>
+	<ui:define name="right-content">
 		<ui:include src="/assets/registration.xhtml" />
 	</ui:define>
 </ui:composition>

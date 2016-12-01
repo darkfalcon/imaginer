@@ -15,12 +15,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-        // Have to disable it for POST methods:
-        // http://stackoverflow.com/a/20608149/1199132
         http.csrf().disable();
-
-        // Logout and redirection:
-        // http://stackoverflow.com/a/24987207/1199132
         http.logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                 .invalidateHttpSession(true)
@@ -28,15 +23,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         "/login.xhtml");
 
         http.authorizeRequests()
-                // Some filters enabling url regex:
-                // http://stackoverflow.com/a/8911284/1199132
                 .antMatchers("/public/**")
                 .permitAll()
-                //Permit access for all to error and denied views
-                // Only access with admin role
                 .antMatchers("/secured/**")
-                .hasAnyAuthority("USER", "ADMIN", "MANAGER")
-                //If user doesn't have permission, forward him to login page
+                .hasAnyAuthority("USER")
+                .antMatchers("/report/**")
+                .hasAnyAuthority("REPORT")
                 .and()
                 .formLogin()
                 .loginPage("/public/login.xhtml")
@@ -49,22 +41,4 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	public void configureGlobal(AuthenticationManagerBuilder auth, AuthenticationProviderImpl authenticationProvider) throws Exception {
 		auth.authenticationProvider(authenticationProvider);
 	}
-
-//    @Autowired
-//    public void configureGlobal(AuthenticationManagerBuilder auth)
-//            throws Exception {
-//        //Configure roles and passwords as in-memory authentication
-//        auth.inMemoryAuthentication()
-//                .withUser("administrator")
-//                .password("pass")
-//                .roles("ADMIN");
-//        auth.inMemoryAuthentication()
-//                .withUser("manager")
-//                .password("pass")
-//                .roles("MANAGEMENT");
-//        auth.inMemoryAuthentication()
-//        .withUser("user")
-//        .password("pass")
-//        .roles("USER");
-//    }
 }

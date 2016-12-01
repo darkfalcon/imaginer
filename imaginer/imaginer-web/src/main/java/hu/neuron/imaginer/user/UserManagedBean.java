@@ -1,6 +1,9 @@
 package hu.neuron.imaginer.user;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -25,6 +28,8 @@ import hu.neuron.imaginer.user.vo.UserVO;
 @SessionScoped
 @ManagedBean(name = "userManagedBean")
 public class UserManagedBean implements Serializable {
+	
+	private static final long serialVersionUID = 1L;
 
 	private static Logger logger = LoggerFactory.getLogger(UserManagedBean.class.getName());
 
@@ -33,10 +38,9 @@ public class UserManagedBean implements Serializable {
 
 	private UserVO actualUser;
 
-	private static final long serialVersionUID = 1L;
-
 	@PostConstruct
 	public void init() {
+		
 		String username = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		try {
 			if (username.contains("@")) {

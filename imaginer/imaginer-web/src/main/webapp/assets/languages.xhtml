@@ -1,0 +1,11 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui">
+	<p:outputPanel>
+		<ui:repeat var="locale" value="#{localeManagedBean.locales}">
+			<p:commandLink process="@this" action="#{localeManagedBean.selectLocale}">
+				<h:graphicImage library="images" name="#{locale.language}.png" />
+				<f:setPropertyActionListener value="#{locale}" target="#{localeManagedBean.locale}"></f:setPropertyActionListener>
+			</p:commandLink>
+		</ui:repeat>
+	</p:outputPanel>
+</ui:composition>

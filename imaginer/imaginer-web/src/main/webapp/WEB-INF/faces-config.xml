@@ -33,5 +33,15 @@
 			<to-view-id>/secured/index.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
+		<navigation-case>
+			<from-outcome>create-gallery</from-outcome>
+			<to-view-id>/secured/create-gallery.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>view-gallery</from-outcome>
+			<to-view-id>/secured/view-gallery.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
 	</navigation-rule>
 </faces-config>
