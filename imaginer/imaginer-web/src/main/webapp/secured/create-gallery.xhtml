@@ -1,0 +1,26 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:p="http://primefaces.org/ui" template="/templates/mainLayout.xhtml">
+	<ui:define name="content">
+		<p:panel>
+			<p:panelGrid>
+				<p:row>
+					<p:column>
+						<h:outputText value="#{msg['imaginer.gallery.new.gallery-name']}" />
+					</p:column>
+					<p:column>
+						<p:input value="#{galleryManagedBean.createGallery.name}" />
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column>
+						<h:outputText value="#{msg['imaginer.gallery.new.gallery-icon']}" />
+					</p:column>
+					<p:column></p:column>
+				</p:row>
+			</p:panelGrid>
+			<p:commandButton value="#{msg['imaginer.common.button.cancel']}" action="#{galleryManagedBean.backToGalleries}" />
+			<p:commandButton value="#{msg['imaginer.common.button.create']}" action="#{galleryManagedBean.createGallery}" />
+		</p:panel>
+	</ui:define>
+</ui:composition>
