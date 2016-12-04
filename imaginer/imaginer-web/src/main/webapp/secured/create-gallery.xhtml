@@ -18,11 +18,14 @@
 						<p:column>
 							<h:outputText value="#{msg['imaginer.gallery.new.gallery-icon']}" />
 						</p:column>
-						<p:column></p:column>
+						<p:column>
+							<p:fileUpload fileUploadListener="#{galleryManagedBean.handleIconUpload}" mode="advanced" />
+						</p:column>
 					</p:row>
 				</p:panelGrid>
 				<p:button value="#{msg['imaginer.common.button.cancel']}" outcome="index" />
-				<p:commandButton value="#{msg['imaginer.common.button.create']}" action="#{galleryManagedBean.createGallery}" />
+				<p:commandButton value="#{msg['imaginer.common.button.create']}" ajax="false"
+					action="#{galleryManagedBean.createGallery}" />
 			</h:form>
 		</p:panel>
 	</ui:define>

@@ -78,11 +78,4 @@
 		<param-name>javax.faces.PROJECT_STAGE</param-name>
 		<param-value>Development</param-value>
 	</context-param>
-
-	<resource-env-ref>
-		<description>Content Repository</description>
-		<resource-env-ref-name>jcr/repository</resource-env-ref-name>
-		<resource-env-ref-type>javax.jcr.Repository</resource-env-ref-type>
-	</resource-env-ref>
-
 </web-app>

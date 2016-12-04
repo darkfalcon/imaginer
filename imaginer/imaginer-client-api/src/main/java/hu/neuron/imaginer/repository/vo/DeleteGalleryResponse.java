@@ -1,5 +1,5 @@
 package hu.neuron.imaginer.repository.vo;
 
-public class StoreContentResponse {
+public class DeleteGalleryResponse {
 
 }

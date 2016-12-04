@@ -50,7 +50,7 @@ public class UserRegistrationManagedBean implements Serializable {
 			authenticateUser(userToRegister.getUsername(), userToRegister.getPassword());
 			return "successful-registration";
 		} catch (ApplicationException e) {
-			return "error";
+			return null;
 		}
 	}
 	

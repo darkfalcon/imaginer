@@ -1,16 +1,16 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:c="http://java.sun.com/jstl/core"
-	xmlns:p="http://primefaces.org/ui" template="/templates/halfLayout.xhtml">
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui" template="/templates/halfLayout.xhtml">
 
 	<ui:define name="left-content">
 		<p:panel>
 			<h:outputText value="#{msg['imaginer.gallery.galleries.title']}" />
 			<hr />
 			<p:dataGrid id="galleries-grid" value="#{galleryManagedBean.galleries}" var="gallery"
-				emptyMessage="msg['imaginer.gallery.empty']" rowIndexVar="rowIndex">
+				emptyMessage="#{msg['imaginer.gallery.empty']}" rowIndexVar="rowIndex">
 				<p:commandLink process="@this" update="gallery-info-panel galleries-grid">
 					<p:panel styleClass="gallery-panel #{galleryManagedBean.selectedGallery eq gallery ? 'selected' : ''}">
-						<p:graphicImage url="http://www.primefaces.org/showcase/javax.faces.resource/demo/images/car/Ford.gif.xhtml" />
+						<o:graphicImage value="#{imageManagedBean.imageContent(imagePathManagedBean.galleryIconPath(gallery))}" />
 						<h:outputText value="#{gallery.name}" />
 					</p:panel>
 					<f:setPropertyActionListener value="#{gallery}" target="#{galleryManagedBean.selectedGallery}" />
@@ -58,11 +58,13 @@
 							<h:outputText value="#{msg['imaginer.gallery.info.number-of-images']}:" />
 						</p:column>
 						<p:column>
-							<h:outputText value="#{galleryManagedBean.selectedGallery.numberOfImages}" />
+							<h:outputText value="#{galleryManagedBean.selectedGallery.size}" />
 						</p:column>
 					</p:row>
 				</p:panelGrid>
 				<p:button outcome="view-gallery" value="#{msg['imaginer.gallery.view.button']}" />
+				<p:commandButton actionListener="#{galleryManagedBean.deleteGallery}"
+					value="#{msg['imaginer.common.button.delete']}" update="gallery-info-panel galleries-grid" />
 			</ui:fragment>
 			<ui:fragment rendered="#{galleryManagedBean.selectedGallery eq null}">
 				<h:outputText value="#{msg['imaginer.gallery.no-gallery-selected']}" />

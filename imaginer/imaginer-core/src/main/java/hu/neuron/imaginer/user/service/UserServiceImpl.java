@@ -101,9 +101,9 @@ public class UserServiceImpl implements UserService {
 			userGroups.add(userGroupRepository.findByCode("USER"));
 			userEntity.setUserGroups(userGroups);
 			userRepository.save(userEntity);
-		} catch (Exception e) {
+		} catch (Throwable t) {
 			throw new ApplicationException(ErrorType.REGISTRATION_ERROR,
-						"Failed to register user: " + user.getUsername(), e);
+						"Failed to register user: " + user.getUsername(), t);
 		}
 	}
 

@@ -7,23 +7,17 @@ import java.util.List;
 public class GalleryVO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	private String name;
 	private Date creationDate;
 	private Date lastModificationDate;
-	private Integer numberOfImages;
+	private Long size;
+	private byte[] icon;
+
 	private List<ImageVO> images;
 
 	public GalleryVO() {
 		super();
-	}
-
-	public GalleryVO(String name, Date creationDate, Date lastModificationDate, Integer numberOfImages) {
-		super();
-		this.name = name;
-		this.creationDate = creationDate;
-		this.lastModificationDate = lastModificationDate;
-		this.numberOfImages = numberOfImages;
 	}
 
 	public String getName() {
@@ -50,12 +44,20 @@ public class GalleryVO implements Serializable {
 		this.lastModificationDate = lastModificationDate;
 	}
 
-	public Integer getNumberOfImages() {
-		return numberOfImages;
+	public Long getSize() {
+		return size;
 	}
 
-	public void setNumberOfImages(Integer numberOfImages) {
-		this.numberOfImages = numberOfImages;
+	public void setSize(Long size) {
+		this.size = size;
+	}
+
+	public byte[] getIcon() {
+		return icon;
+	}
+
+	public void setIcon(byte[] icon) {
+		this.icon = icon;
 	}
 
 	public List<ImageVO> getImages() {
