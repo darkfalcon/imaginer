@@ -1,8 +1,7 @@
 package hu.neuron.imaginer.gallery;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.io.Serializable;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,20 +12,19 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
-import javax.faces.event.PhaseId;
 
 import org.primefaces.event.FileUploadEvent;
-import org.primefaces.model.DefaultStreamedContent;
-import org.primefaces.model.StreamedContent;
 import org.primefaces.model.UploadedFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import hu.neuron.imaginer.exception.ApplicationException;
 import hu.neuron.imaginer.gallery.vo.GalleryVO;
 import hu.neuron.imaginer.gallery.vo.ImageVO;
 import hu.neuron.imaginer.repository.service.RepositoryService;
 import hu.neuron.imaginer.repository.vo.DeleteGalleryRequest;
-import hu.neuron.imaginer.repository.vo.DeleteGalleryResponse;
+import hu.neuron.imaginer.repository.vo.DeleteImageRequest;
+import hu.neuron.imaginer.repository.vo.DeleteImageResponse;
 import hu.neuron.imaginer.repository.vo.GetGalleriesForUserRequest;
 import hu.neuron.imaginer.repository.vo.GetGalleriesForUserResponse;
 import hu.neuron.imaginer.repository.vo.GetImageRequest;
@@ -35,7 +33,9 @@ import hu.neuron.imaginer.repository.vo.GetImagesOfGalleryResponse;
 import hu.neuron.imaginer.repository.vo.StoreGalleryRequest;
 import hu.neuron.imaginer.repository.vo.StoreGalleryResponse;
 import hu.neuron.imaginer.repository.vo.StoreImageRequest;
+import hu.neuron.imaginer.repository.vo.StoreImageResponse;
 import hu.neuron.imaginer.user.UserManagedBean;
+import hu.neuron.imaginer.util.MessageBundle;
 
 @SessionScoped
 @ManagedBean(name = "galleryManagedBean")
@@ -55,7 +55,6 @@ public class GalleryManagedBean implements Serializable {
 
 	private GalleryVO selectedGallery;
 	private GalleryVO newGallery;
-	private UploadedFile galleryIcon;
 	private ImageVO selectedImage;
 
 	@PostConstruct
@@ -71,8 +70,25 @@ public class GalleryManagedBean implements Serializable {
 		}
 	}
 
-	public void initNewGallery() {
+	/**
+	 * A galéria oldalról az új galéria létrehozása gombra kattintva hívódik
+	 * meg. Mindig új GalleryVO-t hoz létre.
+	 * 
+	 * @return outcome
+	 */
+	public String initGallery() {
 		this.newGallery = new GalleryVO();
+		return "create-gallery";
+	}
+
+	/**
+	 * Ha valaki linkkel navigál a galéria létrehozás oldalra, ne fusson hibára
+	 * a kód.
+	 */
+	public void initNewGallery() {
+		if (this.newGallery == null) {
+			this.newGallery = new GalleryVO();
+		}
 	}
 
 	public String createGallery() {
@@ -102,19 +118,29 @@ public class GalleryManagedBean implements Serializable {
 	}
 
 	public void handleImageUpload(final FileUploadEvent event) {
-		UploadedFile file = event.getFile();
-		ImageVO image = new ImageVO();
-		image.setName(file.getFileName());
-		image.setFileFormat(file.getContentType());
+		try {
+			UploadedFile file = event.getFile();
+			ImageVO image = new ImageVO();
+			image.setName(file.getFileName());
+			image.setFileFormat(file.getContentType());
 
-		StoreImageRequest request = new StoreImageRequest();
-		request.setUsername(userManagedBean.getActualUser().getUsername());
-		request.setGalleryName(this.selectedGallery.getName());
-		request.setImage(image);
-		request.setImageContent(file.getContents());
-		repositoryService.storeImage(request);
-		FacesMessage message = new FacesMessage("Succesful", event.getFile().getFileName() + " is uploaded.");
-		FacesContext.getCurrentInstance().addMessage(null, message);
+			StoreImageRequest request = new StoreImageRequest();
+			request.setUsername(userManagedBean.getActualUser().getUsername());
+			request.setGalleryName(this.selectedGallery.getName());
+			request.setImage(image);
+			request.setImageContent(file.getContents());
+			StoreImageResponse storeImage = repositoryService.storeImage(request);
+			this.selectedGallery.getImages().add(storeImage.getImage());
+			FacesMessage message = new FacesMessage(MessageBundle.getBundle("imaginer.gallery.images.successful_upload"),
+							event.getFile().getFileName());
+			FacesContext.getCurrentInstance().addMessage(null, message);
+		} catch (ApplicationException e) {
+			logger.error(e.getMessage(), e);
+			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "", MessageFormat.format(
+					MessageBundle.getBundle("imaginer.error.service." + e.getErrorType().getAsString()),
+					event.getFile().getFileName()));
+			FacesContext.getCurrentInstance().addMessage(null, message);
+		}
 	}
 
 	public void handleIconUpload(FileUploadEvent event) {
@@ -122,32 +148,40 @@ public class GalleryManagedBean implements Serializable {
 		this.newGallery.setIcon(file.getContents());
 	}
 
-	public void loadImages() {
-		if (this.selectedGallery == null) {
-			try {
-				FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
-			} catch (IOException e) {
-				logger.error("Failed to redirect index.xhtml!");
+	public String viewGallery() {
+		this.selectedGallery.setImages(new ArrayList<>());
+		this.selectedImage = null;
+		try {
+			GetImagesOfGalleryRequest request = new GetImagesOfGalleryRequest();
+			request.setGalleryName(this.selectedGallery.getName());
+			request.setUsername(this.userManagedBean.getActualUser().getUsername());
+			GetImagesOfGalleryResponse response = this.repositoryService.getImagesOfGallery(request);
+			this.selectedGallery.getImages().addAll(response.getImages());
+			if (!this.selectedGallery.getImages().isEmpty()) {
+				this.selectedImage = this.selectedGallery.getImages().get(0);
 			}
-		} else {
-			this.selectedGallery.setImages(new ArrayList<>());
-			try {
-				GetImagesOfGalleryRequest request = new GetImagesOfGalleryRequest();
-				request.setGalleryName(this.selectedGallery.getName());
-				request.setUsername(this.userManagedBean.getActualUser().getUsername());
-				GetImagesOfGalleryResponse response = this.repositoryService.getImagesOfGallery(request);
-				this.selectedGallery.getImages().addAll(response.getImages());
-			} catch (Exception e) {
-				logger.error(e.getMessage(), e);
-			}
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
 		}
+		return "view-gallery";
 	}
 
-	public void upload(final ActionEvent event) {
-		GetImageRequest request = new GetImageRequest();
-		request.setPath(this.userManagedBean.getActualUser().getUsername() + "/" + this.selectedGallery.getName()
-				+ "/unnamed.png");
-		repositoryService.getImage(request);
+	public void deleteImage(final ActionEvent event) {
+		try {
+			DeleteImageRequest request = new DeleteImageRequest();
+			request.setUsername(this.userManagedBean.getActualUser().getUsername());
+			request.setGalleryName(this.selectedGallery.getName());
+			request.setImageName(this.selectedImage.getName());
+			this.repositoryService.deleteImage(request);
+			this.selectedGallery.getImages().remove(this.selectedImage);
+			if (!this.selectedGallery.getImages().isEmpty()) {
+				this.selectedImage = this.selectedGallery.getImages().get(0);
+			} else {
+				this.selectedImage = null;
+			}
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+		}
 	}
 
 	public List<GalleryVO> getGalleries() {
@@ -172,14 +206,6 @@ public class GalleryManagedBean implements Serializable {
 
 	public void setNewGallery(GalleryVO newGallery) {
 		this.newGallery = newGallery;
-	}
-
-	public UploadedFile getGalleryIcon() {
-		return galleryIcon;
-	}
-
-	public void setGalleryIcon(UploadedFile galleryIcon) {
-		this.galleryIcon = galleryIcon;
 	}
 
 	public ImageVO getSelectedImage() {

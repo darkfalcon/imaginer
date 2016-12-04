@@ -1,0 +1,47 @@
+.ui-panel {
+	padding: 0;
+}
+
+.half-layout {
+	width: 100%;
+}
+
+.half-layout .left-content, .half-layout .right-content {
+	width: calc(50% - 1px);
+	display: inline-block;
+}
+
+.gallery-layout .right-content {
+	width: calc(30% - 1px);
+	display: inline-block;
+}
+
+.images-grid .image-icon-container {
+	background: #fff;
+	border: 2px solid #000;
+	display: inline-block;
+	vertical-align: top;
+	padding: 10px;
+	width: 130px;
+	height: 130px;
+	margin-right: .5em;
+	margin-bottom: .3em;
+}
+
+.crop {
+	height: 100%;
+	overflow: hidden;
+	position: relative;
+}
+
+.crop img {
+	display: block;
+	min-width: 100%;
+	min-height: 100%;
+	margin: auto;
+	position: absolute;
+	top: -100%;
+	right: -100%;
+	bottom: -100%;
+	left: -100%;
+}

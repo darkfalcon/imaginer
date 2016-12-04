@@ -30,12 +30,14 @@
 			<p:outputPanel styleClass="container">
 				<!-- Begining of content -->
 				<ui:include src="/assets/navigation.xhtml" />
-				<p:panel styleClass="col-xs-6">
-					<ui:insert name="left-content" />
-				</p:panel>
-				<p:panel styleClass="col-xs-6">
-					<ui:insert name="right-content" />
-				</p:panel>
+				<p:outputPanel styleClass="half-layout">
+					<p:panel styleClass="left-content">
+						<ui:insert name="left-content" />
+					</p:panel>
+					<p:panel styleClass="right-content">
+						<ui:insert name="right-content" />
+					</p:panel>
+				</p:outputPanel>
 			</p:outputPanel>
 		</f:view>
 	</h:body>

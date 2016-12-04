@@ -23,7 +23,7 @@
 	<h:body>
 		<!-- Javascripts for ImaginerWEB -->
 		<h:outputScript name="imaginer.js" library="js" />
-<!-- 		<h:outputScript name="jquery/jquery-3.1.1.min.js" /> -->
+		<!-- 		<h:outputScript name="jquery/jquery-3.1.1.min.js" /> -->
 		<h:outputScript name="bootstrap/js/bootstrap.min.js" />
 		<!-- End of javascripts for ImaginerWEB -->
 		<f:view locale="#{localeManagedBean.locale}">
@@ -34,12 +34,14 @@
 					<ui:insert name="title" />
 				</p:panel>
 				<hr />
-				<p:panel styleClass="col-xs-6">
-					<ui:insert name="left-content" />
-				</p:panel>
-				<p:panel styleClass="col-xs-6">
-					<ui:insert name="right-content" />
-				</p:panel>
+				<p:outputPanel styleClass="gallery-layout">
+					<p:panel styleClass="left-content">
+						<ui:insert name="left-content" />
+					</p:panel>
+					<p:panel styleClass="right-content">
+						<ui:insert name="right-content" />
+					</p:panel>
+				</p:outputPanel>
 				<hr />
 				<p:panel styleClass="col-xs-6">
 					<ui:insert name="action-bar" />

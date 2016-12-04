@@ -5,36 +5,47 @@
 		<h:outputText value="#{galleryManagedBean.selectedGallery.name}" styleClass="page-title" />
 	</ui:define>
 	<ui:define name="left-content">
-		<f:event type="preRenderView" listener="#{galleryManagedBean.loadImages}"/>
 		<p:outputPanel id="selected-image-panel">
-			<h:outputText value="#{galleryManagedBean.selectedImage}" styleClass="image-title" />
-			<p:graphicImage url="http://www.primefaces.org/showcase/javax.faces.resource/demo/images/car/Ford.gif.xhtml" />
-			<p:panelGrid rendered="#{galleryManagedBean.selectedImage ne null}">
-				<p:row>
-					<p:column>
-						<h:outputText value="#{msg['imaginer.gallery.images.image-format']}:" />
-					</p:column>
-					<p:column>
-						<h:outputText value="#{galleryManagedBean.selectedImage.fileFormat}" />
-					</p:column>
-				</p:row>
-				<p:row>
-					<p:column>
-						<h:outputText value="#{msg['imaginer.gallery.images.image-size']}:" />
-					</p:column>
-					<p:column>
-						<h:outputText value="#{galleryManagedBean.selectedImage.formattedSize}" />
-					</p:column>
-				</p:row>
-			</p:panelGrid>
+			<ui:fragment rendered="#{galleryManagedBean.selectedImage ne null}">
+				<h:outputText value="#{galleryManagedBean.selectedImage.name}" styleClass="image-title" />
+				<o:graphicImage
+					value="#{imageManagedBean.imageContent(imagePathManagedBean.imagePath(galleryManagedBean.selectedImage))}" />
+				<p:panelGrid rendered="#{galleryManagedBean.selectedImage ne null}">
+					<p:row>
+						<p:column>
+							<h:outputText value="#{msg['imaginer.gallery.images.image-format']}:" />
+						</p:column>
+						<p:column>
+							<h:outputText value="#{galleryManagedBean.selectedImage.fileFormat}" />
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column>
+							<h:outputText value="#{msg['imaginer.gallery.images.image-size']}:" />
+						</p:column>
+						<p:column>
+							<h:outputText value="#{galleryManagedBean.selectedImage.formattedSize}" />
+						</p:column>
+					</p:row>
+				</p:panelGrid>
+				<p:commandButton value="#{msg['imaginer.common.button.delete']}" actionListener="#{galleryManagedBean.deleteImage}"
+					update="selected-image-panel" />
+			</ui:fragment>
+			<ui:fragment rendered="#{galleryManagedBean.selectedImage eq null}">
+				<h:outputText value="#{galleryManagedBean.selectedImage.formattedSize}" />
+			</ui:fragment>
 		</p:outputPanel>
 	</ui:define>
 	<ui:define name="right-content">
 		<p:dataGrid id="images-grid" value="#{galleryManagedBean.selectedGallery.images}" var="image"
-			emptyMessage="#{msg['imaginer.gallery.images.empty']}" rowIndexVar="rowIndex">
-			<p:commandLink process="@this" update="selected-image-panel images-grid">
+			emptyMessage="#{msg['imaginer.gallery.images.empty']}" rowIndexVar="rowIndex" styleClass="images-grid">
+			<p:commandLink process="@this" update="selected-image-panel">
 				<p:panel styleClass="images-panel #{galleryManagedBean.selectedGallery eq gallery ? 'selected' : ''}">
-					<o:graphicImage value="#{image.content}" />
+					<p:outputPanel styleClass="image-icon-container">
+						<p:outputPanel styleClass="crop">
+							<o:graphicImage value="#{imageManagedBean.imageContent(imagePathManagedBean.imagePath(image))}" />
+						</p:outputPanel>
+					</p:outputPanel>
 					<h:outputText value="#{image.name}" />
 				</p:panel>
 				<f:setPropertyActionListener value="#{image}" target="#{galleryManagedBean.selectedImage}" />
@@ -42,12 +53,13 @@
 		</p:dataGrid>
 	</ui:define>
 	<ui:define name="action-bar">
+		<p:messages id="messages" />
 		<h:form id="fileupload-form">
 			<p:fileUpload id="image-uploader" fileUploadListener="#{galleryManagedBean.handleImageUpload}" mode="advanced"
-				dragDropSupport="true" update="messages" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" auto="false" />
+				oncomplete="updateGrid()" dragDropSupport="true" update="messages" allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
+				auto="false" />
+			<p:remoteCommand name="updateGrid" autoRun="false" update="images-grid messages" />
 		</h:form>
-		<p:messages id="messages" autoUpdate="true" />
 		<p:button value="#{msg['imaginer.common.button.back']}" outcome="index" />
-		<p:commandButton value="upload" actionListener="#{galleryManagedBean.upload}"/>
 	</ui:define>
 </ui:composition>

@@ -55,7 +55,7 @@ public class RepositoryServiceImpl implements RepositoryService {
 	private static final String PROPERTY_GALLERY_NAME = "gallery_name";
 	private static final String PROPERTY_CREATION_DATE = "creation_date";
 	private static final String PROPERTY_LAST_MODIFICATION_DATE = "last_modification_date";
-	
+
 	private static final String NODE_USERS = "users";
 
 	@Override
@@ -75,6 +75,10 @@ public class RepositoryServiceImpl implements RepositoryService {
 					Binary imageBinary = session.getValueFactory().createBinary(stream);
 					image.setProperty(PROPERTY_IMAGE_BINARY, imageBinary);
 					image.setProperty(PROPERTY_FILE_FORMAT, request.getImage().getFileFormat());
+					image.setProperty(PROPERTY_SIZE, request.getImageContent().length);
+
+					gallery.setProperty(PROPERTY_LAST_MODIFICATION_DATE, Calendar.getInstance());
+
 					session.save();
 					response.setImage(request.getImage());
 				} else {
@@ -83,12 +87,14 @@ public class RepositoryServiceImpl implements RepositoryService {
 				}
 			} else {
 				throw new ApplicationException(ErrorType.IMAGE_ALREADY_EXISTS,
-						"An image with this name: " + request.getImage().getName() + " already exists in gallery: "
+						"An image with this name: " + request.getImage().getName() + " already exists in this gallery: "
 								+ request.getGalleryName() + " for user: " + request.getUsername());
 			}
 		} catch (Exception e) {
-			throw new ApplicationException(ErrorType.FAILED_TO_STORE_GALLERY,
-					"Failed to store gallery: " + request.getGalleryName() + " for user: " + request.getUsername(), e);
+			throw new ApplicationException(ErrorType.FAILED_TO_STORE_IMAGE,
+					"Failed to store image: " + request.getImage().getName() + " to gallery: "
+							+ request.getGalleryName() + " for user: " + request.getUsername(),
+					e);
 		} finally {
 			JcrUtil.closeSession(session);
 		}
@@ -259,7 +265,6 @@ public class RepositoryServiceImpl implements RepositoryService {
 						image.setFileFormat(next.getProperty(PROPERTY_FILE_FORMAT).getString());
 						image.setSize(next.getProperty(PROPERTY_SIZE).getLong());
 						image.setName(next.getName());
-						next.getCorrespondingNodePath(request.getUsername());
 						response.getImages().add(image);
 					}
 				} else {
