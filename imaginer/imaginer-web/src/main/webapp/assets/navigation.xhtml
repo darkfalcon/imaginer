@@ -1,5 +1,16 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui">
-	<ui:include src="/assets/languages.xhtml" />
-	<ui:include src="/assets/status-bar.xhtml" />
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui"
+	xmlns:sec="http://www.springframework.org/security/tags">
+	<p:outputPanel styleClass="navbar navbar-inverse navbar-fixed-top">
+		<p:outputPanel styleClass="container">
+			<sec:authorize access="isAuthenticated()">
+				<p:link outcome="index" value="#{msg['imaginer.name']}" styleClass="navbar-brand" />
+			</sec:authorize>
+			<sec:authorize access="not isAuthenticated()">
+				<p:link outcome="login" value="#{msg['imaginer.name']}" styleClass="navbar-brand" />
+			</sec:authorize>
+			<ui:include src="/assets/languages.xhtml" />
+			<ui:include src="/assets/status-bar.xhtml" />
+		</p:outputPanel>
+	</p:outputPanel>
 </ui:composition>

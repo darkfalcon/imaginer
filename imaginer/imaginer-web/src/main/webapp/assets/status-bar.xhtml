@@ -1,6 +1,9 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui">
-	<h:form>
-		<p:commandButton value="#{msg['imaginer.logout']}" action="#{userManagedBean.logout}" />
-	</h:form>
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui"
+	xmlns:sec="http://www.springframework.org/security/tags">
+	<sec:authorize access="isAuthenticated()"> 
+		<h:form>
+			<p:commandLink value="#{msg['imaginer.logout']}" action="#{userManagedBean.logout}" />
+		</h:form>
+	</sec:authorize>
 </ui:composition>

@@ -136,9 +136,9 @@ public class GalleryManagedBean implements Serializable {
 			FacesContext.getCurrentInstance().addMessage(null, message);
 		} catch (ApplicationException e) {
 			logger.error(e.getMessage(), e);
-			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "", MessageFormat.format(
+			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageFormat.format(
 					MessageBundle.getBundle("imaginer.error.service." + e.getErrorType().getAsString()),
-					event.getFile().getFileName()));
+					event.getFile().getFileName()), "");
 			FacesContext.getCurrentInstance().addMessage(null, message);
 		}
 	}

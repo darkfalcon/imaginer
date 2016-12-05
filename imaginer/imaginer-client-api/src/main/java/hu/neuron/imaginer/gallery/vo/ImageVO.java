@@ -1,9 +1,12 @@
 package hu.neuron.imaginer.gallery.vo;
 
+import java.io.Serializable;
 import java.text.DecimalFormat;
 
-public class ImageVO {
+public class ImageVO implements Serializable {
 
+	private static final long serialVersionUID = 1L;
+	
 	private String name;
 	private String fileFormat;
 	private Long size;
@@ -12,10 +15,11 @@ public class ImageVO {
 		super();
 	}
 
-	public ImageVO(String name, String fileFormat) {
+	public ImageVO(String name, String fileFormat, Long size) {
 		super();
 		this.name = name;
 		this.fileFormat = fileFormat;
+		this.size = size;
 	}
 
 	public String getName() {

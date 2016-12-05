@@ -8,8 +8,10 @@
 		<p:outputPanel id="selected-image-panel">
 			<ui:fragment rendered="#{galleryManagedBean.selectedImage ne null}">
 				<h:outputText value="#{galleryManagedBean.selectedImage.name}" styleClass="image-title" />
+				<hr />
 				<o:graphicImage
 					value="#{imageManagedBean.imageContent(imagePathManagedBean.imagePath(galleryManagedBean.selectedImage))}" />
+				<hr />
 				<p:panelGrid rendered="#{galleryManagedBean.selectedImage ne null}">
 					<p:row>
 						<p:column>
@@ -28,8 +30,11 @@
 						</p:column>
 					</p:row>
 				</p:panelGrid>
-				<p:commandButton value="#{msg['imaginer.common.button.delete']}" actionListener="#{galleryManagedBean.deleteImage}"
-					update="selected-image-panel" />
+				<hr />
+				<h:form>
+					<p:commandButton value="#{msg['imaginer.common.button.delete']}" actionListener="#{galleryManagedBean.deleteImage}"
+						update="selected-image-panel" />
+				</h:form>
 			</ui:fragment>
 			<ui:fragment rendered="#{galleryManagedBean.selectedImage eq null}">
 				<h:outputText value="#{galleryManagedBean.selectedImage.formattedSize}" />
@@ -37,19 +42,19 @@
 		</p:outputPanel>
 	</ui:define>
 	<ui:define name="right-content">
-		<p:dataGrid id="images-grid" value="#{galleryManagedBean.selectedGallery.images}" var="image"
+		<p:dataGrid id="images-grid" value="#{galleryManagedBean.selectedGallery.images}" var="image" columns="2"
 			emptyMessage="#{msg['imaginer.gallery.images.empty']}" rowIndexVar="rowIndex" styleClass="images-grid">
-			<p:commandLink process="@this" update="selected-image-panel">
-				<p:panel styleClass="images-panel #{galleryManagedBean.selectedGallery eq gallery ? 'selected' : ''}">
-					<p:outputPanel styleClass="image-icon-container">
-						<p:outputPanel styleClass="crop">
-							<o:graphicImage value="#{imageManagedBean.imageContent(imagePathManagedBean.imagePath(image))}" />
-						</p:outputPanel>
+			<h:form>
+				<p:commandLink process="@this" update="selected-image-panel">
+					<p:outputPanel id="image-icon-container"
+						styleClass="image-icon-container #{galleryManagedBean.selectedGallery eq gallery ? 'selected' : ''}">
+						<o:graphicImage value="#{imageManagedBean.imageContent(imagePathManagedBean.imagePath(image))}" />
+						<h:outputText value="#{image.name}" styleClass="image-name" />
 					</p:outputPanel>
-					<h:outputText value="#{image.name}" />
-				</p:panel>
-				<f:setPropertyActionListener value="#{image}" target="#{galleryManagedBean.selectedImage}" />
-			</p:commandLink>
+					<p:tooltip id="image-icon-tooltip" for="image-icon-container" value="#{image.name}" position="top" />
+					<f:setPropertyActionListener value="#{image}" target="#{galleryManagedBean.selectedImage}" />
+				</p:commandLink>
+			</h:form>
 		</p:dataGrid>
 	</ui:define>
 	<ui:define name="action-bar">
@@ -58,8 +63,9 @@
 			<p:fileUpload id="image-uploader" fileUploadListener="#{galleryManagedBean.handleImageUpload}" mode="advanced"
 				oncomplete="updateGrid()" dragDropSupport="true" update="messages" allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
 				auto="false" />
-			<p:remoteCommand name="updateGrid" autoRun="false" update="images-grid messages" />
+			<p:remoteCommand name="updateGrid" autoRun="false" update="images-grid" />
 		</h:form>
+		<hr />
 		<p:button value="#{msg['imaginer.common.button.back']}" outcome="index" />
 	</ui:define>
 </ui:composition>

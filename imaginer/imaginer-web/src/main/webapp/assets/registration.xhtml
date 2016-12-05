@@ -25,7 +25,7 @@
 						<p:password id="registration-password" value="#{userRegistrationManagedBean.userToRegister.password}"
 							feedback="true" promptLabel="#{msg['imaginer.registration.enter-password']}"
 							weakLabel="#{msg['imaginer.password.weak']}" goodLabel="#{msg['imaginer.password.avarage']}"
-							strongLabel="#{msg['imaginer.password.strong']}" match="registration-password-confirm" required="true"
+							strongLabel="#{msg['imaginer.password.strong']}" required="true" match="registration-password-confirm"
 							requiredMessage="#{msg['imaginer.error.input.password.empty']}">
 							<f:validator binding="#{inputValidator}" />
 							<f:attribute name="type" value="PASSWORD" />
@@ -39,7 +39,7 @@
 					</p:column>
 					<p:column>
 						<p:password id="registration-password-confirm" value="#{userRegistrationManagedBean.userToRegister.password}"
-							feedback="true" promptLabel="#{msg['imaginer.registration.enter-password']}"
+							feedback="true" promptLabel="#{msg['imaginer.registration.enter-password']}" 
 							weakLabel="#{msg['imaginer.password.weak']}" goodLabel="#{msg['imaginer.password.avarage']}"
 							strongLabel="#{msg['imaginer.password.strong']}" required="true"
 							requiredMessage="#{msg['imaginer.error.input.password.empty']}">

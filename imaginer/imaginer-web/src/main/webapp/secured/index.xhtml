@@ -4,26 +4,30 @@
 
 	<ui:define name="left-content">
 		<p:panel>
-			<h:outputText value="#{msg['imaginer.gallery.galleries.title']}" />
+			<h:outputText value="#{msg['imaginer.gallery.galleries.title']}" styleClass="box-title" />
 			<hr />
 			<p:dataGrid id="galleries-grid" styleClass="galleries-grid" value="#{galleryManagedBean.galleries}" var="gallery"
-				emptyMessage="#{msg['imaginer.gallery.empty']}" rowIndexVar="rowIndex">
+				columns="3" emptyMessage="#{msg['imaginer.gallery.empty']}" rowIndexVar="rowIndex">
 				<p:commandLink process="@this" update="gallery-info-panel galleries-grid">
-					<p:panel styleClass="gallery-panel #{galleryManagedBean.selectedGallery eq gallery ? 'selected' : ''}">
+					<p:outputPanel styleClass="gallery-panel">
 						<o:graphicImage value="#{imageManagedBean.imageContent(imagePathManagedBean.galleryIconPath(gallery))}" />
-						<h:outputText value="#{gallery.name}" />
-					</p:panel>
+						<h:outputText value="#{gallery.name}" styleClass="gallery-title" />
+					</p:outputPanel>
 					<f:setPropertyActionListener value="#{gallery}" target="#{galleryManagedBean.selectedGallery}" />
 				</p:commandLink>
 			</p:dataGrid>
-			<p:commandButton value="#{msg['imaginer.gallery.create-new.button']}" action="#{galleryManagedBean.initGallery}"/>
+			<hr />
+			<p:commandButton value="#{msg['imaginer.gallery.create-new.button']}" action="#{galleryManagedBean.initGallery}" />
 		</p:panel>
 	</ui:define>
 	<ui:define name="right-content">
 		<p:panel id="gallery-info-panel">
-			<h:outputText value="#{msg['imaginer.gallery.info.title']}" />
+			<h:outputText value="#{msg['imaginer.gallery.info.title']}" styleClass="box-title" />
 			<hr />
 			<ui:fragment rendered="#{galleryManagedBean.selectedGallery ne null}">
+				<o:graphicImage
+					value="#{imageManagedBean.imageContent(imagePathManagedBean.galleryIconPath(galleryManagedBean.selectedGallery))}" />
+				<hr />
 				<p:panelGrid>
 					<p:row>
 						<p:column>
@@ -62,6 +66,7 @@
 						</p:column>
 					</p:row>
 				</p:panelGrid>
+				<hr />
 				<p:commandButton action="#{galleryManagedBean.viewGallery}" value="#{msg['imaginer.gallery.view.button']}" />
 				<p:commandButton actionListener="#{galleryManagedBean.deleteGallery}"
 					value="#{msg['imaginer.common.button.delete']}" update="gallery-info-panel galleries-grid" />

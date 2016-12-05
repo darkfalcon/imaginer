@@ -1,22 +1,18 @@
 package hu.neuron.imaginer.service;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 
 import javax.jcr.Binary;
-import javax.jcr.ItemExistsException;
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
-import javax.jcr.PathNotFoundException;
 import javax.jcr.Repository;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
-import javax.jcr.lock.LockException;
-import javax.jcr.nodetype.ConstraintViolationException;
-import javax.jcr.version.VersionException;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.jackrabbit.commons.JcrUtils;
@@ -59,7 +55,7 @@ public class RepositoryServiceImpl implements RepositoryService {
 	private static final String NODE_USERS = "users";
 
 	@Override
-	public StoreImageResponse storeImage(StoreImageRequest request) throws ApplicationException {
+	public StoreImageResponse storeImage(final StoreImageRequest request) throws ApplicationException {
 		StoreImageResponse response = new StoreImageResponse();
 		Session session = null;
 		try {
@@ -80,7 +76,9 @@ public class RepositoryServiceImpl implements RepositoryService {
 					gallery.setProperty(PROPERTY_LAST_MODIFICATION_DATE, Calendar.getInstance());
 
 					session.save();
-					response.setImage(request.getImage());
+					ImageVO imageVO = new ImageVO(request.getImage().getName(), request.getImage().getFileFormat(),
+							new Long(request.getImageContent().length));
+					response.setImage(imageVO);
 				} else {
 					throw new ApplicationException(ErrorType.NO_SUCH_GALLERY, "No such gallery exists with name: "
 							+ request.getGalleryName() + " for user: " + request.getUsername());
@@ -90,7 +88,7 @@ public class RepositoryServiceImpl implements RepositoryService {
 						"An image with this name: " + request.getImage().getName() + " already exists in this gallery: "
 								+ request.getGalleryName() + " for user: " + request.getUsername());
 			}
-		} catch (Exception e) {
+		} catch (RepositoryException e) {
 			throw new ApplicationException(ErrorType.FAILED_TO_STORE_IMAGE,
 					"Failed to store image: " + request.getImage().getName() + " to gallery: "
 							+ request.getGalleryName() + " for user: " + request.getUsername(),
@@ -117,7 +115,7 @@ public class RepositoryServiceImpl implements RepositoryService {
 				throw new ApplicationException(ErrorType.NO_SUCH_IMAGE,
 						"No such image found on path: " + request.getPath());
 			}
-		} catch (Exception e) {
+		} catch (RepositoryException | IOException e) {
 			throw new ApplicationException(ErrorType.FAILED_TO_GET_IMAGE,
 					"Failed to get image on path: " + request.getPath(), e);
 		} finally {
@@ -149,7 +147,7 @@ public class RepositoryServiceImpl implements RepositoryService {
 									+ request.getGalleryName() + " for user: " + request.getUsername());
 				}
 			}
-		} catch (Exception e) {
+		} catch (RepositoryException e) {
 			throw new ApplicationException(ErrorType.FAILED_TO_GET_GALLERY,
 					"Failed to get gallery: " + request.getGalleryName() + " for user: " + request.getUsername(), e);
 		} finally {
@@ -189,7 +187,7 @@ public class RepositoryServiceImpl implements RepositoryService {
 						+ request.getGalleryName() + " for user: " + request.getUsername());
 			}
 			session.save();
-		} catch (Exception e) {
+		} catch (RepositoryException e) {
 			throw new ApplicationException(ErrorType.FAILED_TO_STORE_GALLERY,
 					"Failed to store gallery: " + request.getGalleryName() + " for user: " + request.getUsername(), e);
 		} finally {
@@ -211,7 +209,7 @@ public class RepositoryServiceImpl implements RepositoryService {
 				throw new ApplicationException(ErrorType.NO_SUCH_GALLERY,
 						"No such gallery: " + request.getGalleryName() + " exits for user: " + request.getUsername());
 			}
-		} catch (Exception e) {
+		} catch (RepositoryException e) {
 			throw new ApplicationException(ErrorType.FAILED_TO_GET_GALLERY, "Failed to get gallery: "
 					+ request.getGalleryName() + " for user: " + request.getUsername() + request.getGalleryName(), e);
 		} finally {
@@ -236,7 +234,7 @@ public class RepositoryServiceImpl implements RepositoryService {
 				gallery.remove();
 				session.save();
 			}
-		} catch (Exception e) {
+		} catch (RepositoryException e) {
 			throw new ApplicationException(ErrorType.FAILED_TO_GET_GALLERY, "Failed to get gallery: "
 					+ request.getGalleryName() + " for user: " + request.getUsername() + request.getGalleryName(), e);
 		} finally {
@@ -274,7 +272,7 @@ public class RepositoryServiceImpl implements RepositoryService {
 				throw new ApplicationException(ErrorType.NO_SUCH_GALLERY, "No such gallery exists with name: "
 						+ request.getGalleryName() + " for user: " + request.getUsername());
 			}
-		} catch (Exception e) {
+		} catch (RepositoryException e) {
 			throw new ApplicationException(ErrorType.FAILED_TO_GET_IMAGES, "Failed to get images of gallery: "
 					+ request.getGalleryName() + " for user: " + request.getUsername(), e);
 		} finally {
@@ -314,7 +312,7 @@ public class RepositoryServiceImpl implements RepositoryService {
 			} else {
 				response.setGalleries(Collections.emptyList());
 			}
-		} catch (Exception e) {
+		} catch (RepositoryException e) {
 			throw new ApplicationException(ErrorType.FAILED_TO_GET_GALLERIES,
 					"Failed to get galleries for user: " + request.getUsername(), e);
 		} finally {
@@ -334,8 +332,7 @@ public class RepositoryServiceImpl implements RepositoryService {
 		return usersNode;
 	}
 
-	private Node getUserNode(final Session session, final String username) throws ItemExistsException,
-			PathNotFoundException, VersionException, ConstraintViolationException, LockException, RepositoryException {
+	private Node getUserNode(final Session session, final String username) throws RepositoryException {
 		Node usersNode = getUsersNode(session);
 
 		Node userNode = JcrUtils.getNodeIfExists(usersNode, username);

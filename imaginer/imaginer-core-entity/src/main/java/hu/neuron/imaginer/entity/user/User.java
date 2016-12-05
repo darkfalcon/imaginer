@@ -8,56 +8,57 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinTable;
-import javax.persistence.OneToMany;
-import javax.persistence.UniqueConstraint;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.UniqueConstraint;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="user")
+@Table(name = "user")
 public class User {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
-	@Column(nullable=false, unique=true, length = 32)
+	@Column(nullable = false, unique = true, length = 32)
 	private String username;
-	
-	@Column(nullable=false)
+
+	@Column(nullable = false)
 	private String password;
 
-	@Column(name="first_name", length = 32)
+	@Column(name = "first_name", length = 32)
 	private String firstName;
 
-	@Column(name="last_name", length = 32)
+	@Column(name = "last_name", length = 32)
 	private String lastName;
-	
-	@Column(name="email_address", nullable=false, unique=true, length = 128)
+
+	@Column(name = "email_address", nullable = false, unique = true, length = 128)
 	private String emailAddress;
-	
-	@Column(name="birth_date", nullable=false)
+
+	@Column(name = "birth_date", nullable = false)
 	private Date birthDate;
-	
-	@OneToMany(targetEntity = UserGroup.class )
-	@JoinTable(
-			name="user_group_to_user",
-			joinColumns = @JoinColumn(name = "user_id"), 
-			inverseJoinColumns = @JoinColumn(name = "user_group_id"))
-    private List<UserGroup> userGroups;
-	
-	@Column(nullable=false)
+
+	@ManyToMany(targetEntity = UserGroup.class)
+	@JoinTable(name = "user_group_to_user", 
+		joinColumns = @JoinColumn(name = "user_id") , 
+		inverseJoinColumns = @JoinColumn(name = "user_group_id") , 
+		uniqueConstraints = @UniqueConstraint(columnNames = {
+			"user_id", "user_group_id" }))
+	private List<UserGroup> userGroups;
+
+	@Column(nullable = false)
 	private Boolean activated;
-	
-	@Column(nullable=false)
+
+	@Column(nullable = false)
 	private Boolean disable;
 
 	public User() {
 		super();
 	}
-	
+
 	@PrePersist
 	public void onCreate() {
 		this.activated = Boolean.TRUE;
