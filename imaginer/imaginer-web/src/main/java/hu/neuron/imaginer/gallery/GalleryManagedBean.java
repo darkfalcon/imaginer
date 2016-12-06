@@ -81,6 +81,16 @@ public class GalleryManagedBean implements Serializable {
 		this.newGallery = new GalleryVO();
 		return "create-gallery";
 	}
+	
+	/**
+	 * Ha valaki linkkel navigál a galéria létrehozás oldalra, ne fusson hibára
+	 * a kód.
+	 */
+	public void initNewGallery() {
+		if (this.newGallery == null) {
+			this.newGallery = new GalleryVO();
+		}
+	}
 
 	public String createGallery() {
 		try {
