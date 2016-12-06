@@ -27,9 +27,9 @@
 		<h:outputScript name="bootstrap/js/bootstrap.min.js" />
 		<!-- End of javascripts for ImaginerWEB -->
 		<f:view locale="#{localeManagedBean.locale}">
+			<ui:include src="/assets/navigation.xhtml" />
+			<!-- Begining of content -->
 			<p:outputPanel styleClass="container">
-				<!-- Begining of content -->
-				<ui:include src="/assets/navigation.xhtml" />
 				<ui:insert name="content" />
 			</p:outputPanel>
 		</f:view>

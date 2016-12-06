@@ -1,13 +1,19 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:c="http://java.sun.com/jstl/core"
 	xmlns:p="http://primefaces.org/ui" template="/templates/mainLayout.xhtml">
+	
 	<ui:define name="content">
-		<p:messages id="messages" autoUpdate="true" />
-		<h:form>
-			<h:outputLabel for="username-input" value="#{msg['imaginer.common.username']}" />
-			<p:inputText id="username-input" value="#{reportManagedBean.username}" />
-			<p:commandButton value="report" action="#{reportManagedBean.createReport}" ajax="false" />
-		</h:form>
+		<p:panel>
+			<h:outputText value="#{msg['imaginer.report.title']}" styleClass="box-title" />
+			<hr />
+			<p:messages id="messages" autoUpdate="true" />
+			<h:form>
+				<h:outputLabel for="username-input" value="#{msg['imaginer.common.username']}" />
+				<p:inputText id="username-input" value="#{reportManagedBean.username}" />
+				<hr />
+				<p:commandButton value="#{msg['imaginer.report.button']}" action="#{reportManagedBean.createReport}" ajax="false" />
+			</h:form>
+		</p:panel>
 	</ui:define>
 
 </ui:composition>

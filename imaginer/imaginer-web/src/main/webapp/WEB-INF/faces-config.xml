@@ -43,5 +43,10 @@
 			<to-view-id>/secured/view-gallery.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
+		<navigation-case>
+			<from-outcome>report</from-outcome>
+			<to-view-id>/report/report.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
 	</navigation-rule>
 </faces-config>

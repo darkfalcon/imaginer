@@ -64,24 +64,54 @@ hr {
 
 .navigation-container .navigation-container-content {
 	width: 940px;
-    margin: 0 auto;
-    height: 100%;
-    display: flex;
-    align-items: center;
+	margin: 0 auto;
+	height: 100%;
+}
+
+.navigation-container a {
+	color: white;
+}
+
+.navigation-container a:hover {
+	text-decoration: none;
 }
 
 .navigation-container .title {
 	margin-left: 10px;
-	color: white;
 	font-size: 2em;
+	margin-right: 30px;
 }
 
+.navigation-container .status-bar-container,
 .navigation-container .languages-container {
 	float: right;
+	text-decoration: none;
+}
+
+.navigation-container .status-bar-container a {
+	margin-right: 10px;
 }
 
 .navigation-container .title:hover {
 	text-decoration: none;
+}
+
+.navigation-container .languages-container,
+.navigation-container .status-bar-container {
+	height: 100%;
+}
+
+.navigation-container .title-container,
+.navigation-container .languages-container form,
+.navigation-container .status-bar-container form {
+	height: 100%;
+    display: flex;
+    align-items: center;
+    float: left;
+}
+
+.navigation-container .languages-container .language-icon {
+	margin-left: 5px;
 }
 
 .box-title, .page-title {
@@ -98,7 +128,7 @@ hr {
 
 .registration-table .ui-panelgrid-cell {
 	height: 35px;
-    vertical-align: middle;
+	vertical-align: middle;
 }
 
 .galleries-grid .ui-widget-content {
@@ -175,6 +205,7 @@ hr {
 	font-size: 10px;
 }
 
-.selected-image-panel .image-containter {
+.selected-image-panel .image-container {
 	min-height: 320px;
+	text-align: center;
 }

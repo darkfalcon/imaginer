@@ -4,7 +4,7 @@
 		<h:form>
 			<ui:repeat var="locale" value="#{localeManagedBean.locales}">
 				<p:commandLink process="@this" action="#{localeManagedBean.selectLocale}">
-					<h:graphicImage id="language-icon" library="images" name="#{locale.language}.png" />
+					<h:graphicImage id="language-icon" library="images" name="#{locale.language}.png" styleClass="language-icon"/>
 					<f:setPropertyActionListener value="#{locale}" target="#{localeManagedBean.locale}"></f:setPropertyActionListener>
 				</p:commandLink>
 				<p:tooltip id="language-tooltip" for="language-icon" value="#{msg['imaginer.language.'.concat(locale.language)]}"

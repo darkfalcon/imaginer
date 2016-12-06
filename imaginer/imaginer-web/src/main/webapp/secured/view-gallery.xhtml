@@ -39,7 +39,9 @@
 				</h:form>
 			</ui:fragment>
 			<ui:fragment rendered="#{galleryManagedBean.selectedImage eq null}">
-				<h:outputText value="#{galleryManagedBean.selectedImage.formattedSize}" />
+				<p:outputPanel styleClass="image-container">
+					<h:graphicImage id="language-icon" library="images" name="No-image-found.jpg" />
+				</p:outputPanel>
 			</ui:fragment>
 		</p:outputPanel>
 	</ui:define>
