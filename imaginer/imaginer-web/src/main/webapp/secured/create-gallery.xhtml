@@ -3,7 +3,10 @@
 	xmlns:p="http://primefaces.org/ui" template="/templates/mainLayout.xhtml">
 	<ui:define name="content">
 		<f:event listener="#{galleryManagedBean.initNewGallery}" type="preRenderView"></f:event>
+		<p:messages id="messages" />
 		<p:panel>
+			<h:outputText value="#{msg['imaginer.gallery.create-new.title']}" styleClass="box-title" />
+			<hr />
 			<h:form>
 				<p:panelGrid>
 					<p:row>
@@ -11,7 +14,9 @@
 							<h:outputText value="#{msg['imaginer.gallery.new.gallery-name']}" />
 						</p:column>
 						<p:column>
-							<p:inputText value="#{galleryManagedBean.newGallery.name}" />
+							<p:inputText value="#{galleryManagedBean.newGallery.name}">
+								<p:ajax event="keyup" update="create-button" />
+							</p:inputText>
 						</p:column>
 					</p:row>
 					<p:row>
@@ -19,13 +24,17 @@
 							<h:outputText value="#{msg['imaginer.gallery.new.gallery-icon']}" />
 						</p:column>
 						<p:column>
-							<p:fileUpload fileUploadListener="#{galleryManagedBean.handleIconUpload}" mode="advanced" />
+							<p:fileUpload fileUploadListener="#{galleryManagedBean.handleIconUpload}" mode="advanced"
+								allowTypes="/(\.|\/)(gif|jpe?g|png)$/" oncomplete="refreshButtons();" />
 						</p:column>
 					</p:row>
 				</p:panelGrid>
+				<hr />
+				<p:remoteCommand name="refreshButtons" update="create-button" />
 				<p:button value="#{msg['imaginer.common.button.back']}" outcome="index" />
-				<p:commandButton value="#{msg['imaginer.common.button.create']}" ajax="false"
-					action="#{galleryManagedBean.createGallery}" />
+				<p:commandButton id="create-button" value="#{msg['imaginer.common.button.create']}" update="messages"
+					action="#{galleryManagedBean.createGallery}"
+					disabled="#{empty galleryManagedBean.newGallery.icon or empty galleryManagedBean.newGallery.name}" />
 			</h:form>
 		</p:panel>
 	</ui:define>

@@ -2,8 +2,10 @@
 	xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui">
 	<h:form id="registration-form">
 		<p:panel id="registration-panel">
+			<h:outputText value="#{msg['imaginer.registration']}" styleClass="box-title"/>
+			<hr />
 			<p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
-			<p:panelGrid id="registration-table">
+			<p:panelGrid id="registration-table" styleClass="registration-table">
 				<p:row>
 					<p:column>
 						<h:outputLabel for="registration-username" value="#{msg['imaginer.common.username']}*" />
@@ -95,7 +97,8 @@
 					</p:column>
 				</p:row>
 				<p:row>
-					<p:column>
+					<p:column colspan="2">
+						<hr />
 						<p:commandButton styleClass="button login-button" value="#{msg['imaginer.registration.register']}"
 							action="#{userRegistrationManagedBean.registerUser}" />
 					</p:column>

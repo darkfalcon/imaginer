@@ -39,6 +39,7 @@ public class AuthenticationProviderImpl implements AuthenticationProvider {
 				.authenticate(new AuthenticationRequest(username, password));
 		switch (authenticationResponse.getResult()) {
 		case SUCCESS:
+			createLoginHistoryEntry(username);
 			return new UsernamePasswordAuthenticationToken(authentication.getName(), password,
 					getAuthorities(username));
 		case USER_NOT_FOUND:
@@ -59,6 +60,10 @@ public class AuthenticationProviderImpl implements AuthenticationProvider {
 			grantedAuthorities.add(new SimpleGrantedAuthority(userGroupVO.getCode()));
 		}
 		return grantedAuthorities;
+	}
+	
+	private void createLoginHistoryEntry(String username) {
+		userService.createLoginHistoryEntry(username);
 	}
 
 	@Override

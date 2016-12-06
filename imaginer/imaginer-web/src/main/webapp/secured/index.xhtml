@@ -8,7 +8,7 @@
 			<hr />
 			<p:dataGrid id="galleries-grid" styleClass="galleries-grid" value="#{galleryManagedBean.galleries}" var="gallery"
 				columns="3" emptyMessage="#{msg['imaginer.gallery.empty']}" rowIndexVar="rowIndex">
-				<p:commandLink process="@this" update="gallery-info-panel galleries-grid">
+				<p:commandLink process="@this" update="gallery-info-panel">
 					<p:outputPanel styleClass="gallery-panel">
 						<o:graphicImage value="#{imageManagedBean.imageContent(imagePathManagedBean.galleryIconPath(gallery))}" />
 						<h:outputText value="#{gallery.name}" styleClass="gallery-title" />
@@ -25,9 +25,6 @@
 			<h:outputText value="#{msg['imaginer.gallery.info.title']}" styleClass="box-title" />
 			<hr />
 			<ui:fragment rendered="#{galleryManagedBean.selectedGallery ne null}">
-				<o:graphicImage
-					value="#{imageManagedBean.imageContent(imagePathManagedBean.galleryIconPath(galleryManagedBean.selectedGallery))}" />
-				<hr />
 				<p:panelGrid>
 					<p:row>
 						<p:column>

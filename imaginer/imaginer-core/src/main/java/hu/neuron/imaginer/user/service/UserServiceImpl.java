@@ -2,7 +2,10 @@ package hu.neuron.imaginer.user.service;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.persistence.EntityManager;
@@ -18,14 +21,16 @@ import org.springframework.transaction.annotation.Transactional;
 
 import hu.neuron.imaginer.entity.user.User;
 import hu.neuron.imaginer.entity.user.UserGroup;
+import hu.neuron.imaginer.entity.user.UserLoginHistory;
 import hu.neuron.imaginer.entity.user.UserVerificationToken;
 import hu.neuron.imaginer.exception.ApplicationException;
 import hu.neuron.imaginer.exception.ErrorType;
 import hu.neuron.imaginer.user.repository.UserGroupRepository;
+import hu.neuron.imaginer.user.repository.UserLoginHistoryRepository;
 import hu.neuron.imaginer.user.repository.UserRepository;
 import hu.neuron.imaginer.user.repository.UserVerificationTokenRepository;
-import hu.neuron.imaginer.user.service.UserService;
 import hu.neuron.imaginer.user.vo.UserGroupVO;
+import hu.neuron.imaginer.user.vo.UserLoginHistoryVO;
 import hu.neuron.imaginer.user.vo.UserRegistrationVO;
 import hu.neuron.imaginer.user.vo.UserVO;
 
@@ -44,6 +49,9 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private UserVerificationTokenRepository userVerificationTokenRepository;
+
+	@Autowired
+	private UserLoginHistoryRepository userLoginHistoryRepository;
 
 	Logger logger = LoggerFactory.getLogger("UserServiceImpl");
 
@@ -103,7 +111,7 @@ public class UserServiceImpl implements UserService {
 			userRepository.save(userEntity);
 		} catch (Throwable t) {
 			throw new ApplicationException(ErrorType.REGISTRATION_ERROR,
-						"Failed to register user: " + user.getUsername(), t);
+					"Failed to register user: " + user.getUsername(), t);
 		}
 	}
 
@@ -132,5 +140,54 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public List<UserGroupVO> getUserGroupsForUser(String username) throws ApplicationException {
 		return findUserByUserName(username).getUserGroups();
+	}
+
+	@Override
+	public void createLoginHistoryEntry(String username) throws ApplicationException {
+		User user = userRepository.findByUsername(username);
+		UserLoginHistory history = new UserLoginHistory();
+		history.setLoginDate(new Date());
+		history.setUser(user);
+		userLoginHistoryRepository.save(history);
+	}
+
+	@Override
+	public UserLoginHistoryVO getUserLoginHistory(String username) throws ApplicationException {
+		UserLoginHistoryVO result = new UserLoginHistoryVO();
+		User user = userRepository.findByUsername(username);
+		if (user == null) {
+			throw new ApplicationException(ErrorType.NO_USER_WITH_USERNAME, "There is no such user in the database!");
+		}
+		result.setEmailAddress(user.getEmailAddress());
+		List<UserLoginHistory> histories = userLoginHistoryRepository.findByUserIds(user.getId());
+		if (!histories.isEmpty()) {
+			for (UserLoginHistory userLoginHistory : histories) {
+				result.getLoginDates().add(userLoginHistory.getLoginDate());
+			}
+		}
+		return result;
+	}
+
+	@Override
+	public List<UserLoginHistoryVO> getUsersLoginHistory() throws ApplicationException {
+		List<UserLoginHistory> histories = userLoginHistoryRepository.findAll();
+		if (histories.isEmpty()) {
+			return Collections.emptyList();
+		} else {
+			Map<String, UserLoginHistoryVO> historiesPerUser = new HashMap<>();
+			for (UserLoginHistory userLoginHistory : histories) {
+				String email = userLoginHistory.getUser().getEmailAddress();
+				UserLoginHistoryVO historyVO = historiesPerUser.get(email);
+				if (historyVO != null) {
+					historyVO.getLoginDates().add(userLoginHistory.getLoginDate());
+				} else {
+					historyVO = new UserLoginHistoryVO();
+					historyVO.setEmailAddress(email);
+					historyVO.getLoginDates().add(userLoginHistory.getLoginDate());
+					historiesPerUser.put(email, historyVO);
+				}
+			}
+			return new ArrayList<>(historiesPerUser.values());
+		}
 	}
 }

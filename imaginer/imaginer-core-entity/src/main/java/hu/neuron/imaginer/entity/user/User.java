@@ -11,9 +11,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.UniqueConstraint;
+import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 @Entity
 @Table(name = "user")
@@ -42,12 +43,12 @@ public class User {
 	private Date birthDate;
 
 	@ManyToMany(targetEntity = UserGroup.class)
-	@JoinTable(name = "user_group_to_user", 
-		joinColumns = @JoinColumn(name = "user_id") , 
-		inverseJoinColumns = @JoinColumn(name = "user_group_id") , 
-		uniqueConstraints = @UniqueConstraint(columnNames = {
-			"user_id", "user_group_id" }))
+	@JoinTable(name = "user_group_to_user", joinColumns = @JoinColumn(name = "user_id") , inverseJoinColumns = @JoinColumn(name = "user_group_id") , uniqueConstraints = @UniqueConstraint(columnNames = {
+			"user_id", "user_group_id" }) )
 	private List<UserGroup> userGroups;
+
+	@OneToMany(mappedBy = "user")
+	private List<UserLoginHistory> loginHistories;
 
 	@Column(nullable = false)
 	private Boolean activated;
@@ -127,6 +128,14 @@ public class User {
 
 	public void setUserGroups(List<UserGroup> userGroups) {
 		this.userGroups = userGroups;
+	}
+
+	public List<UserLoginHistory> getLoginHistories() {
+		return loginHistories;
+	}
+
+	public void setLoginHistories(List<UserLoginHistory> loginHistories) {
+		this.loginHistories = loginHistories;
 	}
 
 	public Boolean getActivated() {

@@ -14,10 +14,10 @@
 		</f:facet>
 
 		<!-- Styles for ImaginerWEB -->
-		<link type="text/css" rel="stylesheet"
-			href="#{facesContext.externalContext.requestContextPath}/resources/style/imaginer.css" />
 		<link href="#{facesContext.externalContext.requestContextPath}/resources/bootstrap/css/bootstrap.min.css"
 			rel="stylesheet" media="screen" />
+		<link type="text/css" rel="stylesheet"
+			href="#{facesContext.externalContext.requestContextPath}/resources/style/imaginer.css" />
 		<!-- End of styles for ImaginerWEB -->
 	</h:head>
 	<h:body>
@@ -27,11 +27,11 @@
 		<h:outputScript name="bootstrap/js/bootstrap.min.js" />
 		<!-- End of javascripts for ImaginerWEB -->
 		<f:view locale="#{localeManagedBean.locale}">
-			<p:panel styleClass="container">
+			<p:outputPanel styleClass="container">
 				<!-- Begining of content -->
 				<ui:include src="/assets/navigation.xhtml" />
 				<ui:insert name="content" />
-			</p:panel>
+			</p:outputPanel>
 		</f:view>
 	</h:body>
 </f:view>

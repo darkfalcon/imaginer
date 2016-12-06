@@ -208,6 +208,20 @@ public class RepositoryServiceImpl implements RepositoryService {
 			if (gallery == null) {
 				throw new ApplicationException(ErrorType.NO_SUCH_GALLERY,
 						"No such gallery: " + request.getGalleryName() + " exits for user: " + request.getUsername());
+			} else {
+				GalleryVO galleryVO = new GalleryVO();
+				galleryVO.setCreationDate(gallery.getProperty(PROPERTY_CREATION_DATE).getDate().getTime());
+				galleryVO.setLastModificationDate(
+						gallery.getProperty(PROPERTY_LAST_MODIFICATION_DATE).getDate().getTime());
+				galleryVO.setName(gallery.getProperty(PROPERTY_GALLERY_NAME).getString());
+				long size = 0l;
+				NodeIterator imagesIterator = gallery.getNodes();
+				while (imagesIterator.hasNext()) {
+					size++;
+					imagesIterator.next();
+				}
+				galleryVO.setSize(size);
+				response.setGallery(galleryVO);
 			}
 		} catch (RepositoryException e) {
 			throw new ApplicationException(ErrorType.FAILED_TO_GET_GALLERY, "Failed to get gallery: "

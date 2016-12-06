@@ -24,10 +24,10 @@ import hu.neuron.imaginer.gallery.vo.ImageVO;
 import hu.neuron.imaginer.repository.service.RepositoryService;
 import hu.neuron.imaginer.repository.vo.DeleteGalleryRequest;
 import hu.neuron.imaginer.repository.vo.DeleteImageRequest;
-import hu.neuron.imaginer.repository.vo.DeleteImageResponse;
 import hu.neuron.imaginer.repository.vo.GetGalleriesForUserRequest;
 import hu.neuron.imaginer.repository.vo.GetGalleriesForUserResponse;
-import hu.neuron.imaginer.repository.vo.GetImageRequest;
+import hu.neuron.imaginer.repository.vo.GetGalleryRequest;
+import hu.neuron.imaginer.repository.vo.GetGalleryResponse;
 import hu.neuron.imaginer.repository.vo.GetImagesOfGalleryRequest;
 import hu.neuron.imaginer.repository.vo.GetImagesOfGalleryResponse;
 import hu.neuron.imaginer.repository.vo.StoreGalleryRequest;
@@ -93,15 +93,24 @@ public class GalleryManagedBean implements Serializable {
 
 	public String createGallery() {
 		try {
-			StoreGalleryRequest request = new StoreGalleryRequest();
-			request.setGallery(this.newGallery);
-			request.setUsername(this.userManagedBean.getActualUser().getUsername());
-			StoreGalleryResponse response = this.repositoryService.storeGallery(request);
-			this.galleries.add(response.getGallery());
-		} catch (Exception e) {
+			if (this.newGallery != null) {
+				StoreGalleryRequest request = new StoreGalleryRequest();
+				request.setGallery(this.newGallery);
+				request.setUsername(this.userManagedBean.getActualUser().getUsername());
+				StoreGalleryResponse response = this.repositoryService.storeGallery(request);
+				this.galleries.add(response.getGallery());
+				return "index";
+			}
+		} catch (ApplicationException e) {
 			logger.error(e.getMessage(), e);
+			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR,
+					MessageFormat.format(
+							MessageBundle.getBundle("imaginer.error.service." + e.getErrorType().getAsString()),
+							this.newGallery.getName()),
+					"");
+			FacesContext.getCurrentInstance().addMessage(null, message);
 		}
-		return "index";
+		return null;
 	}
 
 	public void deleteGallery(final ActionEvent event) {
@@ -131,14 +140,18 @@ public class GalleryManagedBean implements Serializable {
 			request.setImageContent(file.getContents());
 			StoreImageResponse storeImage = repositoryService.storeImage(request);
 			this.selectedGallery.getImages().add(storeImage.getImage());
-			FacesMessage message = new FacesMessage(MessageBundle.getBundle("imaginer.gallery.images.successful_upload"),
-							event.getFile().getFileName());
+			refreshSelectedGallery();
+			FacesMessage message = new FacesMessage(
+					MessageBundle.getBundle("imaginer.gallery.images.successful_upload"),
+					event.getFile().getFileName());
 			FacesContext.getCurrentInstance().addMessage(null, message);
 		} catch (ApplicationException e) {
 			logger.error(e.getMessage(), e);
-			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageFormat.format(
-					MessageBundle.getBundle("imaginer.error.service." + e.getErrorType().getAsString()),
-					event.getFile().getFileName()), "");
+			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR,
+					MessageFormat.format(
+							MessageBundle.getBundle("imaginer.error.service." + e.getErrorType().getAsString()),
+							event.getFile().getFileName()),
+					"");
 			FacesContext.getCurrentInstance().addMessage(null, message);
 		}
 	}
@@ -179,9 +192,32 @@ public class GalleryManagedBean implements Serializable {
 			} else {
 				this.selectedImage = null;
 			}
+			refreshSelectedGallery();
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 		}
+	}
+	
+	private void refreshSelectedGallery() {
+		GetGalleryRequest request = new GetGalleryRequest();
+		request.setUsername(this.userManagedBean.getActualUser().getUsername());
+		request.setGalleryName(this.selectedGallery.getName());
+		GetGalleryResponse response = this.repositoryService.getGallery(request);
+		this.selectedGallery.setLastModificationDate(response.getGallery().getLastModificationDate());
+		this.selectedGallery.setSize(response.getGallery().getSize());
+		
+		GalleryVO galleryByName = getGalleryByName(this.selectedGallery.getName());
+		galleryByName.setLastModificationDate(galleryByName.getLastModificationDate());
+		galleryByName.setSize(galleryByName.getSize());
+	}
+	
+	private GalleryVO getGalleryByName(final String name) {
+		for (GalleryVO gallery : this.galleries) {
+			if (name.equals(gallery.getName())) {
+				return gallery;
+			}
+		}
+		return null;
 	}
 
 	public List<GalleryVO> getGalleries() {

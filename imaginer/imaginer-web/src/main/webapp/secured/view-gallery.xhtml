@@ -5,12 +5,14 @@
 		<h:outputText value="#{galleryManagedBean.selectedGallery.name}" styleClass="page-title" />
 	</ui:define>
 	<ui:define name="left-content">
-		<p:outputPanel id="selected-image-panel">
+		<p:outputPanel id="selected-image-panel" styleClass="selected-image-panel">
 			<ui:fragment rendered="#{galleryManagedBean.selectedImage ne null}">
 				<h:outputText value="#{galleryManagedBean.selectedImage.name}" styleClass="image-title" />
 				<hr />
-				<o:graphicImage
-					value="#{imageManagedBean.imageContent(imagePathManagedBean.imagePath(galleryManagedBean.selectedImage))}" />
+				<p:outputPanel styleClass="image-container">
+					<o:graphicImage
+						value="#{imageManagedBean.imageContent(imagePathManagedBean.imagePath(galleryManagedBean.selectedImage))}" />
+				</p:outputPanel>
 				<hr />
 				<p:panelGrid rendered="#{galleryManagedBean.selectedImage ne null}">
 					<p:row>
@@ -33,7 +35,7 @@
 				<hr />
 				<h:form>
 					<p:commandButton value="#{msg['imaginer.common.button.delete']}" actionListener="#{galleryManagedBean.deleteImage}"
-						update="selected-image-panel" />
+						update="selected-image-panel images-grid" />
 				</h:form>
 			</ui:fragment>
 			<ui:fragment rendered="#{galleryManagedBean.selectedImage eq null}">
