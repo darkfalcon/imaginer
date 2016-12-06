@@ -80,13 +80,13 @@ public class RepositoryServiceImpl implements RepositoryService {
 							new Long(request.getImageContent().length));
 					response.setImage(imageVO);
 				} else {
-					throw new ApplicationException(ErrorType.NO_SUCH_GALLERY, "No such gallery exists with name: "
-							+ request.getGalleryName() + " for user: " + request.getUsername());
+					throw new ApplicationException(ErrorType.IMAGE_ALREADY_EXISTS,
+							"An image with this name: " + request.getImage().getName() + " already exists in this gallery: "
+									+ request.getGalleryName() + " for user: " + request.getUsername());
 				}
 			} else {
-				throw new ApplicationException(ErrorType.IMAGE_ALREADY_EXISTS,
-						"An image with this name: " + request.getImage().getName() + " already exists in this gallery: "
-								+ request.getGalleryName() + " for user: " + request.getUsername());
+				throw new ApplicationException(ErrorType.NO_SUCH_GALLERY, "No such gallery exists with name: "
+						+ request.getGalleryName() + " for user: " + request.getUsername());
 			}
 		} catch (RepositoryException e) {
 			throw new ApplicationException(ErrorType.FAILED_TO_STORE_IMAGE,

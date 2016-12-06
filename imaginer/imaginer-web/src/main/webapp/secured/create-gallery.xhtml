@@ -25,7 +25,9 @@
 						</p:column>
 						<p:column>
 							<p:fileUpload fileUploadListener="#{galleryManagedBean.handleIconUpload}" mode="advanced"
-								allowTypes="/(\.|\/)(gif|jpe?g|png)$/" oncomplete="refreshButtons();" />
+								label="#{msg['imaginer.common.button.choose']}" uploadLabel="#{msg['imaginer.common.button.upload']}"
+								cancelLabel="#{msg['imaginer.common.button.cancel']}" allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
+								oncomplete="refreshButtons();" />
 						</p:column>
 					</p:row>
 				</p:panelGrid>

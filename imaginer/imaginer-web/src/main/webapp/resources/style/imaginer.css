@@ -40,6 +40,10 @@ hr {
 	display: inline-block;
 }
 
+.half-layout .right-content {
+	float: right;
+}
+
 .half-layout .left-content {
 	margin-right: 10px;
 }
@@ -55,6 +59,7 @@ hr {
 
 .gallery-layout .right-content {
 	width: calc(35% - 2px);
+	float: right;
 }
 
 .navigation-container {
@@ -186,8 +191,6 @@ hr {
 	padding: 10px;
 	width: 110px;
 	height: 110px;
-	margin-right: .5em;
-	margin-bottom: .3em;
 	text-align: center;
 }
 
@@ -196,6 +199,7 @@ hr {
 	width: 100%;
 	height: 100%;
 	border-radius: 25%;
+	border-top: 1px solid grey;
 }
 
 .images-grid .image-name {

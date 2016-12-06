@@ -2,10 +2,13 @@
 	xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:c="http://java.sun.com/jstl/core"
 	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui" template="/templates/galleryLayout.xhtml">
 	<ui:define name="title">
-		<h:outputText value="#{galleryManagedBean.selectedGallery.name}" styleClass="page-title" />
+		<h:outputText value="#{galleryManagedBean.selectedGallery.name}" styleClass="page-title"
+			rendered="#{galleryManagedBean.selectedGallery ne null}" />
+		<h:outputText value="#{msg['imaginer.gallery.no-gallery-selected']}" styleClass="page-title"
+			rendered="#{galleryManagedBean.selectedGallery eq null}" />
 	</ui:define>
 	<ui:define name="left-content">
-		<p:outputPanel id="selected-image-panel" styleClass="selected-image-panel">
+		<p:panel id="selected-image-panel" styleClass="selected-image-panel">
 			<ui:fragment rendered="#{galleryManagedBean.selectedImage ne null}">
 				<h:outputText value="#{galleryManagedBean.selectedImage.name}" styleClass="image-title" />
 				<hr />
@@ -43,33 +46,38 @@
 					<h:graphicImage id="language-icon" library="images" name="No-image-found.jpg" />
 				</p:outputPanel>
 			</ui:fragment>
-		</p:outputPanel>
+		</p:panel>
 	</ui:define>
 	<ui:define name="right-content">
-		<p:dataGrid id="images-grid" value="#{galleryManagedBean.selectedGallery.images}" var="image" columns="2"
-			emptyMessage="#{msg['imaginer.gallery.images.empty']}" rowIndexVar="rowIndex" styleClass="images-grid">
-			<h:form>
-				<p:commandLink process="@this" update="selected-image-panel">
-					<p:outputPanel id="image-icon-container"
-						styleClass="image-icon-container #{galleryManagedBean.selectedGallery eq gallery ? 'selected' : ''}">
-						<o:graphicImage value="#{imageManagedBean.imageContent(imagePathManagedBean.imagePath(image))}" />
-						<h:outputText value="#{image.name}" styleClass="image-name" />
-					</p:outputPanel>
-					<p:tooltip id="image-icon-tooltip" for="image-icon-container" value="#{image.name}" position="top" />
-					<f:setPropertyActionListener value="#{image}" target="#{galleryManagedBean.selectedImage}" />
-				</p:commandLink>
-			</h:form>
-		</p:dataGrid>
+		<p:panel>
+			<p:dataGrid id="images-grid" value="#{galleryManagedBean.selectedGallery.images}" var="image" columns="2"
+				emptyMessage="#{msg['imaginer.gallery.images.empty']}" rowIndexVar="rowIndex" styleClass="images-grid">
+				<h:form>
+					<p:commandLink process="@this" update="selected-image-panel">
+						<p:outputPanel id="image-icon-container"
+							styleClass="image-icon-container #{galleryManagedBean.selectedGallery eq gallery ? 'selected' : ''}">
+							<o:graphicImage value="#{imageManagedBean.imageContent(imagePathManagedBean.imagePath(image))}" />
+							<h:outputText value="#{image.name}" styleClass="image-name" />
+						</p:outputPanel>
+						<p:tooltip id="image-icon-tooltip" for="image-icon-container" value="#{image.name}" position="top" />
+						<f:setPropertyActionListener value="#{image}" target="#{galleryManagedBean.selectedImage}" />
+					</p:commandLink>
+				</h:form>
+			</p:dataGrid>
+		</p:panel>
 	</ui:define>
 	<ui:define name="action-bar">
-		<p:messages id="messages" />
-		<h:form id="fileupload-form">
-			<p:fileUpload id="image-uploader" fileUploadListener="#{galleryManagedBean.handleImageUpload}" mode="advanced"
-				oncomplete="updateGrid()" dragDropSupport="true" update="messages" allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
-				auto="false" />
-			<p:remoteCommand name="updateGrid" autoRun="false" update="images-grid" />
-		</h:form>
-		<hr />
-		<p:button value="#{msg['imaginer.common.button.back']}" outcome="index" />
+		<p:panel>
+			<p:messages id="messages" />
+			<h:form id="fileupload-form">
+				<p:fileUpload id="image-uploader" fileUploadListener="#{galleryManagedBean.handleImageUpload}" mode="advanced"
+					oncomplete="updateGrid()" dragDropSupport="true" update="messages" allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
+					auto="false" label="#{msg['imaginer.common.button.choose']}" uploadLabel="#{msg['imaginer.common.button.upload']}"
+					cancelLabel="#{msg['imaginer.common.button.cancel']}" />
+				<p:remoteCommand name="updateGrid" autoRun="false" update="images-grid" />
+			</h:form>
+			<hr />
+			<p:button value="#{msg['imaginer.common.button.back']}" outcome="index" />
+		</p:panel>
 	</ui:define>
 </ui:composition>

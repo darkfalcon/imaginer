@@ -1,1 +1,0 @@
--Automatikusan a táblák létrehozásakor hozza létre a regisztrációhoz szükséges user_group csoportokat.
