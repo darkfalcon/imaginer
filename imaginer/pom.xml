@@ -4,10 +4,11 @@
 	<groupId>hu.neuron</groupId>
 	<artifactId>imaginer</artifactId>
 	<packaging>pom</packaging>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>${imaginer.version}</version>
 	<name>Imaginer Web Application</name>
 
 	<properties>
+		<imaginer.version>1.0</imaginer.version>
 		<spring.version>4.3.1.RELEASE</spring.version>
 		<spring.security.version>4.2.0.RELEASE</spring.security.version>
 	</properties>

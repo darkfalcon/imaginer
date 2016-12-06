@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>hu.neuron</groupId>
 		<artifactId>imaginer</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
+		<version>${imaginer.version}</version>
 	</parent>
 	<artifactId>imaginer-authentication</artifactId>
 </project>

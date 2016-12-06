@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>hu.neuron</groupId>
 		<artifactId>imaginer</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
+		<version>${imaginer.version}</version>
 	</parent>
 	<artifactId>imaginer-core</artifactId>
 
@@ -12,13 +12,13 @@
 		<dependency>
 			<groupId>hu.neuron</groupId>
 			<artifactId>imaginer-client-api</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>${imaginer.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>hu.neuron</groupId>
 			<artifactId>imaginer-core-entity</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>${imaginer.version}</version>
 		</dependency>
 
 		<dependency>
